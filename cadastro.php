@@ -1,13 +1,17 @@
 <?php include_once 'php/_header.php'; ?>
+<?php   include_once 'php/banner.php';?>
+<?php   include_once 'php/menu.php';?>
+<div style="text-align: center;">
+    <h1>Criar Conta</h1>
+    Insira seu email e defina um nickname e senha:<br><br>
+    <form id="formLogin" action='cadastro.php' method="post">
+        Email <input type="text" name='inputEmail'><br><br>
+        Nickname <input type="text" name='inputNickname'><br><br>
+        Senha <input type="password" name='inputSenha'><br><br>
+        <input type="submit" value='Cadastrar'>
+    </form>
+</div>
 
-<h1>RpgStorm - Cadastro</h1>
-Insira seu email e defina uma senha<br><br>
-<form action='cadastro.php' method="post">
-    Email: <input type="text" name='inputEmail'><br>
-    Nickname: <input type="text" name='inputNickname'><br>
-    Senha: <input type="password" name='inputSenha'><br>
-    <input type="submit" value='Cadastrar'>
-</form>
 
 <?php
     if(isset($_POST["inputEmail"]) && isset($_POST["inputSenha"]) && isset($_POST["inputNickname"])){

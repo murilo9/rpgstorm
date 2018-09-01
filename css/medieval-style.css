@@ -1,0 +1,54 @@
+#menu{
+    text-align: center;
+}
+#menu ul{ 
+    list-style-type: none; 
+    margin-bottom:  0px;
+    padding: 0; 
+    overflow: hidden; 
+    display: inline-block;
+}
+#menu li{ 
+    float: left; 
+} 
+#menu li a{ 
+    display: block; 
+    color: #3d2e09;
+    text-align: center; 
+    font-weight: bold;
+    padding: 14px 16px; 
+    text-decoration: none; 
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    margin-right: 8px;
+}
+#menu li a:hover{
+    background: #e8c96d;
+}
+
+#formLogin{
+    font-weight: bold;
+    text-align: right; 
+    color: #3d2e09;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 32px;
+    background: #e8c96d;
+}
+
+body{
+    background: #edd9a8;
+    font-family: Calibri;
+}
+
+#formLogin input{
+    font-weight: bold;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    background: white;
+    padding: 4px;
+}
+#formLogin input:hover{
+    background: #ff7a38;
+}

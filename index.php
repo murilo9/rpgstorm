@@ -1,23 +1,40 @@
 <?php   include_once 'php/_header.php'; ?>
-<h1>RpgStorm - Home</h1>
-<form action='index.php' method='post'>
-    Email: <input type='text' name='inputEmail'><br>
-    Senha: <input type='password' name='inputSenha'><br>
-    <input type="submit" value="Login">
-</form>
+<?php   include_once 'php/banner.php';?>
+<?php   include_once 'php/menu.php';?>
+
+<div style="text-align: center;">
+    <h1>Entrar</h1><br>
+    <form id="formLogin" action='index.php' method='post'>
+        Email <input type='text' name='inputEmail'><br><br>
+        Senha <input type='password' name='inputSenha'><br><br>
+        <input type="submit" value="Login">
+    </form>
+</div>
 
 <?php   //Processamento de dados para login:
     if(isset($_POST["inputEmail"]) && isset($_POST["inputSenha"])){
         include_once 'php/_dbconnect.php';
+        $mayLogin = false;
         $email = $_POST["inputEmail"];
         $senha = $_POST["inputSenha"];
         $sql = "SELECT validaLogin('$email','$senha') AS resultado";
         $query = $con->query($sql);
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){ 
             if($dados["resultado"]){
-                echo 'login success';
+                $mayLogin = true;
             }else{
                 echo 'login fail';
+            }
+        }
+        if($mayLogin){  //Inicia a coleta de dados pra sessão
+            $sql = "SELECT * FROM tbUsuarios WHERE stEmail = '$email' && stSenha = '$senha'";
+            $query = $con->query($sql);
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                session_start();    //Inicia a session
+                $_SESSION["usuarioEmail"] = $dados["stEmail"];
+                $_SESSION["usuarioSenha"] = $dados["stSenha"];
+                $_SESSION["usuarioNickname"] = $dados["stNickname"];
+                header("location: sistema/selecionaMundo.php");
             }
         }
         mysqli_close($con);

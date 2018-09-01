@@ -14,8 +14,8 @@
             $mundoTipo = 'Privado';
         }
         echo "<div id='mundoBox' style='border: 1px solid black;'>".
-                "$mundoNome - $mundoTipo - Criado por: $mundoCreator"
-        . "</div> ";
+                "$mundoNome - $mundoTipo - Criado por: $mundoCreator".
+        "</div> ";
     }
     mysqli_close($con);
 ?>
