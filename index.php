@@ -1,5 +1,5 @@
 <?php   include_once 'php/_header.php'; ?>
-
+<h1>RpgStorm - Home</h1>
 <form action='index.php' method='post'>
     Email: <input type='text' name='inputEmail'><br>
     Senha: <input type='password' name='inputSenha'><br>
