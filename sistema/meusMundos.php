@@ -25,7 +25,9 @@
                 //Pega os staffs:
                 $conOld = mysqli_store_result($con);
                 
-                $sql2 = "CALL getWorldStaffs('$mundoId')";
+                $sql2 = "SELECT U.stNickname, S.stMundo FROM tbStaffs S INNER JOIN tbUsuarios U ".
+                        "ON S.stUsuario = U.stEmail ".
+                        "WHERE S.stMundo = '$mundoId'";
                 $query2 = $con->query($sql2);
                 $staffList = "";
                 if($query2){
