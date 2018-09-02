@@ -4,7 +4,7 @@
 
 <div style="text-align: center;">
     <h1>Entrar</h1><br>
-    <form id="formLogin" action='index.php' method='post'>
+    <form class="formLogin" action='index.php' method='post'>
         Email <input type='text' name='inputEmail'><br><br>
         Senha <input type='password' name='inputSenha'><br><br>
         <input type="submit" value="Login">

@@ -26,7 +26,7 @@
     background: #e8c96d;
 }
 
-#formLogin{
+.formLogin{
     font-weight: bold;
     text-align: right; 
     color: #3d2e09;
@@ -42,14 +42,14 @@ body{
     font-family: Calibri;
 }
 
-#formLogin input{
+.formLogin input{
     font-weight: bold;
     border: 4px solid #3d2e09;
     border-radius: 10px;
     background: white;
     padding: 4px;
 }
-#formLogin input:hover{
+.formLogin input:hover{
     background: #ff7a38;
 }
 #conteudo{
@@ -62,4 +62,5 @@ body{
     border-radius: 10px;
     background: #e8c96d;
     padding: 16px;
+    margin-bottom: 16px;
 }

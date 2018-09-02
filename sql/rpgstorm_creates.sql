@@ -1,5 +1,7 @@
 USE dbrpgstorm;
 
+SELECT * FROM tbUsuarios; SELECT * FROM tbStaffs;
+
 CREATE TABLE tbUsuarios(
 	stEmail VARCHAR(60) NOT NULL,
     stNickname VARCHAR(40) NOT NULL UNIQUE,
@@ -11,9 +13,16 @@ CREATE TABLE tbMundos(
 	stId VARCHAR(5) NOT NULL,
     stNome VARCHAR(80) NOT NULL UNIQUE,
     stCreator VARCHAR(60) NOT NULL,
+    blPublic BOOLEAN DEFAULT true,
     PRIMARY KEY (stId),
     FOREIGN KEY (stCreator) REFERENCES tbUsuarios(stEmail)
 ) ENGINE = innodb;
+
+CALL getWorldStaffs('_6000');
+
+SELECT U.stNickname, S.stMundo FROM tbStaffs S INNER JOIN tbUsuarios U
+    ON S.stUsuario = U.stEmail
+    WHERE S.stMundo = '_7000';
 
 CREATE TABLE tbPersonagens (
 	stId VARCHAR(6) NOT NULL,
@@ -53,6 +62,10 @@ CREATE TABLE tbStaffs(
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail),
     FOREIGN KEY (stMundo) REFERENCES tbMundos(stId)
 ) ENGINE = innodb;
+
+SELECT COUNT(stId) FROM tbCenas WHERE stMundo = '_6000';
+INSERT INTO tbStaffs VALUES ('falamurilo9@hotmail.com','_6000');
+CALL getWorldStaffs('_6000');
 
 CREATE TABLE tbMundoUsuarios(
 	stUsuario VARCHAR(60),
