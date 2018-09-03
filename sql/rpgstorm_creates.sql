@@ -1,6 +1,6 @@
 USE dbrpgstorm;
 
-SELECT * FROM tbUsuarios; SELECT * FROM tbStaffs;
+SELECT * FROM tbUsuarios;
 
 CREATE TABLE tbUsuarios(
 	stEmail VARCHAR(60) NOT NULL,

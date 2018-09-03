@@ -6,12 +6,12 @@
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
 
-<div id="conteudo" style="text-align: center;">
-    <form class="formLogin" action="conta.php" method="post">
+<div class="conteudo" style="text-align: center;">
+    <form class="formulario" action="conta.php" method="post">
         <b>Atualizar Senha</b><br><br>
         Senha Atual:  <input type="password" name="inputSenhaAtual"><br><br>
-        Senha Nova:  <input type="password" name="inputSenhaNova"><br><br>
-        Confirmar Senha Nova:  <input type="password" name="inputSenhaNovaC"><br><br>
+        Senha Nova:  <input type="password" id="senhaNova" name="inputSenhaNova"><br><br>
+        Confirmar Senha Nova:  <input type="password" id="senhaNovaC" name="inputSenhaNovaC"><br><br>
         <input type="submit" value="Atualizar"><br><br>
         <text style="color: red;">
         <?php   //Tratamento dos dados de formulário:
@@ -20,6 +20,10 @@
                 $senhaNova = $_POST["inputSenhaNova"];
                 $senhaNovaC = $_POST["inputSenhaNovaC"];
                 $continue = true;
+                if(strlen($senhaNova)<8){
+                    echo 'A nova senha deve ter pelo menos 8 caracteres<br>';
+                    $continue = false;
+                }
                 if($senhaNova !== $senhaNovaC){
                     echo 'As novas senhas não coincidem.<br>';
                     $continue = false;

@@ -6,7 +6,7 @@
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
 
-<div id="conteudo">
+<div class="conteudo">
     <h2>Meus Mundos</h2>
     <a href="criaMundo.php">Criar Mundo</a><br><br>
     <?php
@@ -48,7 +48,7 @@
                     }
                 }
                 //Exibe os dados do mundo
-                echo "<div id='mundoBox'>".
+                echo "<div class='mundoBox'>".
                         "<b>$mundoNome</b> <br>$mundoTipo<br>Staffs: $staffList<br>Cenas: $cenasQntd".
                     "</div>";
             }

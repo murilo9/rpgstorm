@@ -4,7 +4,8 @@
 #menu ul{ 
     list-style-type: none; 
     margin-bottom:  0px;
-    padding: 0; 
+    margin-top: 0px;
+    padding: 0px; 
     overflow: hidden; 
     display: inline-block;
 }
@@ -16,7 +17,10 @@
     color: #3d2e09;
     text-align: center; 
     font-weight: bold;
-    padding: 14px 16px; 
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
     text-decoration: none; 
     border: 4px solid #3d2e09;
     border-radius: 10px;
@@ -26,8 +30,7 @@
     background: #e8c96d;
 }
 
-.formLogin{
-    font-weight: bold;
+.formulario{
     text-align: right; 
     color: #3d2e09;
     border: 4px solid #3d2e09;
@@ -42,22 +45,33 @@ body{
     font-family: Calibri;
 }
 
-.formLogin input{
+.formulario input{
     font-weight: bold;
     border: 4px solid #3d2e09;
     border-radius: 10px;
     background: white;
     padding: 4px;
 }
-.formLogin input:hover{
+.formulario input:active{
     background: #ff7a38;
 }
-#conteudo{
-    max-width: 80%;
+.formulario button{
+    font-weight: bold;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    margin-right: 8px;
+}
+.formulario button:hover{
+    background: #ff7a38;
+}
+.formulario button:active{
+    background: #e8c96d;
+}
+.conteudo{
     border: 1px solid red;
     padding: 20px;
 }
-#mundoBox{
+.mundoBox{
     border: 4px solid #3d2e09;
     border-radius: 10px;
     background: #e8c96d;

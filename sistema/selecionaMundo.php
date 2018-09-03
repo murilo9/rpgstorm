@@ -3,7 +3,7 @@
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
 
-<div id="conteudo">
+<div class="conteudo">
     <h2>Mundos</h2>
     <?php
         include_once 'php/_dbconnect.php';
