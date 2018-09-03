@@ -4,7 +4,7 @@
 ?>
 <?php include_once 'php/_header.php'; ?>
 
-<script scr="js/funcoesFicha.js"></script>
+<script type="text/javascript" src='js/funcoesFicha.js'></script>
 
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
