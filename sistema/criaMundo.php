@@ -151,6 +151,7 @@
         //Unsets e disconnect:
         mysqli_close($con);
         unset($_POST["enviar"]);
+        header("location: meusMundos.php");
     }
 ?>
 

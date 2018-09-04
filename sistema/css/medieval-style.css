@@ -77,4 +77,15 @@ body{
     background: #e8c96d;
     padding: 16px;
     margin-bottom: 16px;
+}.mundoBox input{
+    font-weight: bold;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    margin-right: 8px;
+}
+.mundoBox input:hover{
+    background: #ff7a38;
+}
+.mundoBox input:active{
+    background: #e8c96d;
 }
