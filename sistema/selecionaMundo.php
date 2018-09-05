@@ -12,13 +12,14 @@
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $mundoNome = $dados["stNome"];
             $mundoCreator = $dados["stNickname"];
+            $mundoId = $dados["stId"];
             if($dados["blPublic"]){
                 $mundoTipo = 'Público';
             }else{
                 $mundoTipo = 'Privado';
             }
             echo "<div id='mundoBox' style='border: 1px solid black;'>".
-                    "$mundoNome - $mundoTipo - Criado por: $mundoCreator".
+                    "<a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a> - $mundoTipo - Criado por: $mundoCreator".
             "</div> ";
         }
         mysqli_close($con);

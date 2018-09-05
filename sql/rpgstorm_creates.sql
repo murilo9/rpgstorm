@@ -33,6 +33,9 @@ CREATE TABLE tbCenas (
     stMundo VARCHAR(5) NOT NULL,
     stCreator VARCHAR(6) NOT NULL,
     blEstado BOOLEAN DEFAULT TRUE,
+    stNome VARCHAR(80),
+    dtData DATETIME DEFAULT NOW(),
+    stImagem VARCHAR(80) DEFAULT 'none',
     PRIMARY KEY (stId, stMundo),
     FOREIGN KEY (stMundo) REFERENCES tbMundos(stId),
     FOREIGN KEY (stCreator) REFERENCES tbPersonagens(stId)

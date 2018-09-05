@@ -89,3 +89,10 @@ body{
 .mundoBox input:active{
     background: #e8c96d;
 }
+.mundoCapa{
+    min-width: 40%;
+    max-width: 70%;
+}
+.cenaBox{
+    border: 1px solid black;
+}

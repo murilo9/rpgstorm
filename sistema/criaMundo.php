@@ -43,7 +43,10 @@
     <div class="formulario">
         <b>Preview</b>
         <div id="modeloFicha">
+            Nome:<input type="text" name="personagemNome" id="personagemNome">
+            <div id="fichaCustom">
             <!-- AQUI VÃO OS ELEMENTOS INSERIDOS DINAMICAMENTE -->
+            </div>
         </div><br><br>
     </div><br>
     <div class="formulario" style="background: #edd9a8; border: none; text-align: center;">
@@ -58,7 +61,7 @@
         $mundoNome = $_POST["inputNome"];
         $mundoTipo = $_POST["tipo"];
         $mundoId = $_POST["inputId"];
-        $mundoDescricao = $_POST["inputDescricao"];     //Guarda o texto formatado que vai no <pre>
+        $mundoDescricao = $_POST["inputDescricao"];     //Guarda o texto formatado que vai no <text>
         $mundoFicha = $_POST["inputFicha"];     //Possui as tags de elementos que compõem a ficha
         $sql = "SELECT stId FROM tbMundos WHERE stNome = '$mundoNome'";
         $query = $con->query($sql);
@@ -114,7 +117,7 @@
             mysqli_close($con);
             die();
         }
-        if(!fwrite($arquivoAberto,"<pre>$mundoDescricao</pre>")){
+        if(!fwrite($arquivoAberto,"<text>$mundoDescricao</text>")){
             echo 'Bad fopen on write.';
             mysqli_close($con);
             die();
@@ -146,8 +149,8 @@
             die();
         }
         echo 'Mundo criado com sucesso.';
-        //echo "Id: $mundoId<br>Nome: $mundoNome<br>Tipo: $mundoTipo<br>Criador: $usuarioEmail".
-                "<br>Descr: $mundoDescricao<br>File: $nomeCapa<br>";
+        /*echo "Id: $mundoId<br>Nome: $mundoNome<br>Tipo: $mundoTipo<br>Criador: $usuarioEmail".
+                "<br>Descr: $mundoDescricao<br>File: $nomeCapa<br>";*/
         //Unsets e disconnect:
         mysqli_close($con);
         unset($_POST["enviar"]);
