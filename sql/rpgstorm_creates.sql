@@ -1,5 +1,5 @@
 USE dbrpgstorm;
-
+SELECT * FROM tbPersonagens;
 CREATE TABLE tbUsuarios(
 	stEmail VARCHAR(60) NOT NULL,
     stNickname VARCHAR(40) NOT NULL UNIQUE,
@@ -22,7 +22,6 @@ CREATE TABLE tbPersonagens (
     stMundo VARCHAR(5) NOT NULL,
     stDono VARCHAR(60) NOT NULL,
     stNome VARCHAR(80) NOT NULL,
-    stFichaPath VARCHAR (80) NOT NULL UNIQUE,
     PRIMARY KEY (stId),
     FOREIGN KEY (stMundo) REFERENCES tbMundos(stId),
     FOREIGN KEY (stDono) REFERENCES tbUsuarios(stEmail)
