@@ -8,7 +8,7 @@
         $usuarioEmail = $_SESSION["usuarioEmail"];
         $personagensList = '<h3>Persongens que você possui:</h3>';
         include 'php/_dbconnect.php';
-        $sql = "SELECT M.stNome AS mNome, P.stNome AS pNome, P.stId AS pId "
+        $sql = "SELECT M.stNome AS mNome, P.stNome AS pNome, P.stId AS pId, P.stFoto AS pFoto, P.stMundo AS pMundoId "
                 . "FROM tbPersonagens P INNER JOIN tbMundos M "
                 . "ON P.stMundo = M.stId WHERE stDono='$usuarioEmail'";
         $query = $con->query($sql);
@@ -17,7 +17,17 @@
                 $personagemNome = $dados["pNome"];
                 $personagemMundo = $dados["mNome"];
                 $personagemId = $dados["pId"];
-                $personagensList .= "<a href='infoPersonagem.php?id=$personagemId'>$personagemNome</a> no mundo $personagemMundo<br>";
+                $personagemFoto = $dados["pFoto"];
+                $personagemMundoId = $dados["pMundoId"];
+                if($personagemFoto === 'none'){     //Se o personagem não tiver foto, usa a default
+                    $img = 'img/foto-none.jpg';
+                }else{          //Caso contrário, usa a que está no BD
+                    $img = "mundos/$personagemMundoId/personagens/$personagemId/$personagemFoto";
+                }
+                $personagensList .= "<div class='personagemBox'>"
+                        . "<img src='$img' width='80%'></img><br>"
+                        . "<a href='infoPersonagem.php?id=$personagemId'>$personagemNome</a><br>"
+                        . "Mundo: $personagemMundo<br></div>";
             }
             echo $personagensList;
         }else{

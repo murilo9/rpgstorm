@@ -37,6 +37,22 @@
             $personagemFicha .= fgets($arquivoAberto);
         }
         fclose($arquivoAberto);
+        //Verifica se possui foto:
+        include 'php/_dbconnect.php';
+        $sql = "SELECT stFoto FROM tbPersonagens WHERE stId = '$personagemId'";
+        $query = $con->query($sql);
+        while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+            $personagemFoto = $dados["stFoto"];
+        }
+        mysqli_close($con);
+        if($personagemFoto === 'none'){
+            echo "<img src='img/foto-none.jpg' width='40%'></img>";
+        }else{
+            echo "<img src='mundos/$personagemMundoId/personagens/$personagemId/$personagemFoto' width='30%'></img>";
+        }
+        echo "<form action='php/mudaFoto.php?id=$personagemId' method='post' enctype='multipart/form-data'>"
+        . "<input name='arquivo' type='file' size='20'><input name='atualiza' type='hidden' value='true'>"
+                . "<input type='submit' value='Atualizar Retrato'></form>";
         //Exibe todos os dados:
         echo "<h2>$personagemNome</h2>Mundo: $personagemMundo<br><br><h3>Ficha<h3>";
         echo "<div class='formulario'>$personagemFicha</div>";

@@ -23,7 +23,7 @@
     fwrite($arquivoAberto, $ficha);
     fclose($arquivoAberto);
     //Registra o personagem no DB:
-    $sql = "INSERT INTO tbPersonagens VALUES ('$personagemId','$mundoId','$usuarioEmail','$personagemNome')";
+    $sql = "INSERT INTO tbPersonagens VALUES ('$personagemId','$mundoId','$usuarioEmail','$personagemNome', 'none')";
     $query = $con->query($sql);
     if(!$query){
         echo "Erro no query:".mysqli_error($con);

@@ -96,3 +96,8 @@ body{
 .cenaBox{
     border: 1px solid black;
 }
+.personagemBox{
+    border: 1px solid black;
+    display: inline-block;
+    width: 20%;
+}
