@@ -27,23 +27,17 @@
                 header("location: meusPersonagens.php");
             }
         }else{                  //Se não tiver, espera a confirmação do usuário
-            $_SESSION["deletaPersonagemId"] = $_GET["id"];      //Armazena a id em $_SESSION pra pegar depois do refresh
-            $_SESSION["deletaPersonagemMundo"] = $_GET["mundo"];    //Armazena o mudno em $_SESSION pra pegar no refresh
-            $personagemId = $_GET["id"];
-            $personagemMundoId = $_GET["mundo"];
+            $_SESSION["deletaPersonagemId"] = $_POST["id"];      //Armazena a id em $_SESSION pra pegar depois do refresh
+            $_SESSION["deletaPersonagemMundo"] = $_POST["mundo"];    //Armazena o mudno em $_SESSION pra pegar no refresh
+            $personagemId = $_POST["id"];
+            $personagemMundoId = $_POST["mundo"];
             $usuarioEmail = $_SESSION["usuarioEmail"];
             include 'php/_dbconnect.php';
             $sql = "SELECT * FROM tbPersonagens WHERE stId='$personagemId' && "
                     . "stMundo='$personagemMundoId' && stDono='$usuarioEmail'";
             $query = $con->query($sql);
-            if($query->num_rows==0){
-                echo 'Erro. Este personagem não é seu.';
-                mysqli_close($con);
-                header("location: meusPersonagens.php");
-            }else{
-                while($dados = $query->fetch_array(MYSQLI_ASSOC)){
-                    $personagemNome = $dados["stNome"];
-                }
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                $personagemNome = $dados["stNome"];
             }
             echo "Deseja mesmo deletar o(a) personagem $personagemNome?<br>";
         }
