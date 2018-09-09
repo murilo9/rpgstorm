@@ -24,15 +24,26 @@
 ?>
 <div class="conteudo">
     <h2>Criar Cena em <?php echo $mundoNome;?></h2>
-    <form action="criarCena.php" metho="post">
-        Nome da Cena: <input type="text" name="inputNomeCena"><br><br>Personagem: 
-        <select name="selectPersonagem">
-            <?php
-                include 'php/_dbconnect.php';
-                //TODO select de personagem
-                mysqli_close($con);
-            ?>
-        </select>
+    <form action="criarCena.php" metho="post" class="formulario">
+        Nome da Cena: <input type="text" name="inputNomeCena"><br><br>
+        <?php
+            include 'php/_dbconnect.php';
+            $sql = "SELECT * FROM tbPersonagens WHERE stDono = '$usuarioEmail' && stMundo = '$mundoId'";
+            $query = $con->query($sql);
+            if($query->num_rows>0){
+                echo "<select name='personagem'>";
+                while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                    $personagemNome = $dados["stNome"];
+                    $personagemId = $dados["stId"];
+                    echo "<option value='$personagemId'>$personagemNome</option>";
+                }
+                echo '</select>';
+            }else{
+                echo 'Você precisa ter um personagem neste mundo para criar uma cena.';
+            }
+            mysqli_close($con);
+        ?>
+        
     </form>
 </div>
 

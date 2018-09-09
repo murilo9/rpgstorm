@@ -54,7 +54,9 @@
         . "<input name='arquivo' type='file' size='20'><input name='atualiza' type='hidden' value='true'>"
                 . "<input type='submit' value='Atualizar Retrato'></form>";
         //Exibe todos os dados:
-        echo "<h2>$personagemNome</h2>Mundo: $personagemMundo<br><br><h3>Ficha<h3>";
+        echo "<h2>$personagemNome</h2>Mundo: $personagemMundo<br>"
+                . "<a href='deletaPersonagem.php?id=$personagemId&mundo=$personagemMundoId'>Deletar Personagem</a>"
+                . "<br><br><h3>Ficha<h3>";
         echo "<div class='formulario'>$personagemFicha</div>";
     ?>
 </div>

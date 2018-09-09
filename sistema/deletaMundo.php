@@ -54,7 +54,7 @@
                     mysqli_close($con);
                     die();
                 }
-                //Apaga os arquivos do servidor:
+                //Desativa a pasta do mundo no servidor:
                 rename("mundos/$mundoId", "mundos/OFF$mundoId");
                 //Fim do procedimento, redireciona o usuário:
                 unset($_SESSION["deletaMundoId"]);      //Retira a Id do mundo da session
