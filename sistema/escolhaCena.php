@@ -74,15 +74,19 @@
             }
             echo "<br><h3 style='display: inline-block;'>Cenas</h3>"
                . "<a href='criarCena.php?mundo=$mundoId' style='float: right;'>Criar Cena</a><br>";
-            $sql = "SELECT * FROM tbCenas WHERE stMundo='$mundoId' ORDER BY dtData";
+            //Exibe a lista de cenas que o mundo possui:
+            $sql = "SELECT C.stNome AS cNome, C.stCreator, C.blEstado AS cEstado, "
+                    . "C.dtData cData, C.stImagem AS cImagem, P.stNome AS pNome "
+                    . "FROM tbCenas C INNER JOIN tbPersonagens P "
+                    . "ON C.stCreator = P.stId WHERE C.stMundo='$mundoId' ORDER BY dtData";
             $query = $con->query($sql);
             if($query->num_rows>0){
                 while($dados = $query->fetch_array(MYSQLI_ASSOC)){
-                    $cenaNome = $dados["stNome"];
-                    $cenaCreator = $dados["stCreator"];
-                    $cenaEstado = $dados["blEstado"];
-                    $cenaData = $dados["dtData"];
-                    $cenaImagem = $dados["stImagem"];
+                    $cenaNome = $dados["cNome"];
+                    $cenaCreator = $dados["pNome"];
+                    $cenaEstado = $dados["cEstado"];
+                    $cenaData = $dados["cData"];
+                    $cenaImagem = $dados["cImagem"];
                     //TODO verificar se a cena possui imagem
                     echo "<div class='cenaBox'><h3>$cenaNome</h3>$cenaData<br>Criada por $cenaCreator</div>";
                 }
