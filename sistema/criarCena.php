@@ -108,8 +108,13 @@
         //Se chegou até aqui, pode criar a pasta da cena no servidor:
         $cenaPath = "mundos/$mundoId/cenas/$cenaId";
         mkdir($cenaPath);
+        //Cria o arquivo com a descrição da cena:
+        $arquivoAberto = fopen("$cenaPath/descricao.php", 'w');
+        fwrite($arquivoAberto, $descricaoCena);
+        fclose($arquivoAberto);
         //Cria a primeira ação da cena:
-        $sql = "INSERT INTO tbAcoes VALUES ('$acaoId','$cenaId','$mundoId','$personagemCena')";
+        $sql = "INSERT INTO tbAcoes (stId, stCena, stMundo, stPersonagem) "
+                . "VALUES ('$acaoId','$cenaId','$mundoId','$personagemCena')";
         $query = $con->query($sql);
         if(!$query){
             echo "Erro no query (publicar ação): ".mysqli_error($con);
@@ -117,8 +122,9 @@
             die;
         }
         //Cria o arquivo com a div de ação na pasta da cena:
-        $arquivoAberto = fopen($cenaPath."/$acaoId.php", 'w');
+        $arquivoAberto = fopen("$cenaPath/$acaoId.php", 'w');
         fwrite($arquivoAberto, "<text>$acaoInicial</text>");
+        fclose($arquivoAberto);
         mysqli_close($con);
         //Se chegou até aqui, deu tudo certo então redireciona o usuário:
         header("location: escolhaCena.php?mundo=$mundoId");

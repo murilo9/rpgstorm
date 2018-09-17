@@ -75,20 +75,30 @@
             echo "<br><h3 style='display: inline-block;'>Cenas</h3>"
                . "<a href='criarCena.php?mundo=$mundoId' style='float: right;'>Criar Cena</a><br>";
             //Exibe a lista de cenas que o mundo possui:
-            $sql = "SELECT C.stNome AS cNome, C.stCreator, C.blEstado AS cEstado, "
-                    . "C.dtData cData, C.stImagem AS cImagem, P.stNome AS pNome "
+            $sql = "SELECT C.stId AS cId, C.stNome AS cNome, C.stCreator, C.blEstado AS cEstado, "
+                    . "C.dtData cData, C.stImagem AS cImagem, P.stNome AS pNome, P.stDono AS pDono "
                     . "FROM tbCenas C INNER JOIN tbPersonagens P "
                     . "ON C.stCreator = P.stId WHERE C.stMundo='$mundoId' ORDER BY dtData";
             $query = $con->query($sql);
             if($query->num_rows>0){
                 while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                    $cenaId = $dados["cId"];
                     $cenaNome = $dados["cNome"];
                     $cenaCreator = $dados["pNome"];
+                    $personagemDono = $dados["pDono"];
                     $cenaEstado = $dados["cEstado"];
                     $cenaData = $dados["cData"];
                     $cenaImagem = $dados["cImagem"];
                     //TODO verificar se a cena possui imagem
-                    echo "<div class='cenaBox'><h3>$cenaNome</h3>$cenaData<br>Criada por $cenaCreator</div>";
+                    echo "<div class='cenaBox'><a href='cena.php?id=$cenaId&mundo=$mundoId'>"
+                            . "<h3>$cenaNome</h3></a>$cenaData<br>Criada por $cenaCreator";
+                    if($personagemDono == $usuarioEmail){     //Se a cena for do usuário, exibe a opção de deletar:
+                        echo "<form action='deletaCena.php' method='post'>"
+                        . "<input name='mundo' type='hidden' value='$mundoId'>"
+                        . "<input name='id' type='hidden' value='$cenaId'>"
+                        . "<input type='submit' value='Deletar'></form>";
+                    }
+                    echo '</div>';
                 }
             }else{
                 echo 'Não há cenas neste mundo.';
