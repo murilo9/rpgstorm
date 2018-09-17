@@ -5,6 +5,7 @@
 
 <?php //Pega as informações básicas do mundo:
     $mundoId = $_GET["mundo"];
+    $cenaId = $_GET["id"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
     include 'php/_dbconnect.php';
     $sql = "SELECT stUsuario FROM tbMundoUsuarios WHERE stUsuario = '$usuarioEmail' && stMundo = '$mundoId'";
@@ -30,7 +31,8 @@
         $sql = "SELECT C.stId AS cId, C.stNome AS cNome, C.stCreator, C.blEstado AS cEstado, "
                     . "C.dtData cData, C.stImagem AS cImagem, P.stNome AS pNome "
                     . "FROM tbCenas C INNER JOIN tbPersonagens P "
-                    . "ON C.stCreator = P.stId WHERE C.stMundo='$mundoId' ORDER BY dtData";
+                    . "ON C.stCreator = P.stId WHERE C.stMundo='$mundoId' && C.stId='$cenaId'"
+                    . "ORDER BY dtData";
         $query = $con->query($sql);
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $cenaId = $dados["cId"];

@@ -54,6 +54,11 @@
                     . "<img class='mundoCapa' src='mundos/$mundoId/$capaArquivo'><br><br>$mundoDescricao<br><br>";
             //--TODO exibir lista de staffs
             //--TODO exibir modelo de ficha
+            //Exibe a opção de pedir parar entrar no mundo:
+            echo "<form method='post'>"
+                . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"
+                . "<input name='entra' type='hidden' value='true'>"
+                . "<input type='submit' value='Entrar no Mundo'></form>";
         }else{              //Se o usuário puder entrar, exibe os personagens e cenas:
             include 'php/_dbconnect.php';
             echo "<h2>$mundoNome</h2>Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>";
@@ -107,5 +112,29 @@
         }
     ?>
 </div>
+
+<?php   //Processa o pedido de usuário entrar no mundo:
+    if(isset($_POST["entra"])){
+        include 'php/_dbconnect.php';
+        //Verifica se o mundo é publico:
+        $sql = "SELECT blPublic FROM tbMundos WHERE stId='$mundoId'";
+        $query = $con->query($sql);
+        while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+            $mundoTipo = $dados["blPublic"];
+        }
+        if($mundoTipo){     //Se o mundo for público, deixa o usuário entrar e cadastra no BD:
+            $sql = "INSERT INTO tbMundoUsuarios VALUES "
+                    . "('$usuarioEmail', '$mundoId')";
+            $query = $con->query($sql);
+            if(!$query){
+                die("Erro no query: ". mysqli_error($con));
+            }
+            header("location: escolhaCena.php?mundo=$mundoId");
+        }else{      //Se o mundo for privado, apenas manda pedido de entrada:
+            //--TODO
+        }
+        mysqli_close($con);
+    }
+?>
 
 <?php include_once 'php/_footer.php'; ?>
