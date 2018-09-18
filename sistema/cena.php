@@ -76,6 +76,69 @@
         }
         mysqli_close($con);
     ?>
+    
+    <?php   //Verifica se o usuário possui um personagem para poder postar ações:
+        include 'php/_dbconnect.php';
+        $sql = "SELECT * FROM tbPersonagens WHERE stDono='$usuarioEmail' && stMundo='$mundoId'";
+        $query = $con->query($sql);
+        if($query->num_rows>0){     //Se o usuário tiver personagens, exibe o form com a lista
+            echo "<form method='post'><input name='postar' type='hidden' value='true'>"
+            . "<input id='inputId' name='inputId' type='hidden'>"
+            . "Postar ação com: <select name='personagem'>";
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){  //Exibe as options
+                $personagemNome = $dados["stNome"];
+                $personagemId = $dados["stId"];
+                echo "<option value='$personagemId'>$personagemNome</option>";
+            }
+            echo "</select><br><textarea name='inputAcao' cols='70' rows='10'></textarea>"
+            . "<br><input type='submit' value='Postar'></form>";
+        }else{      //Se o usuário não tiver personagens, não exibe o form:
+            echo 'Voce precisar ter ao menos um personagem neste mundo para postar ações.';
+        }
+        mysqli_close($con);
+    ?>
 </div>
+
+
+<script>
+    //Gera um id aleatório único pra ação:
+    document.getElementById("inputId").value = '_'+Math.floor(Math.random()*99999);
+</script>
+
+<?php   //Processa a postagem de ações:
+    if(isset($_POST["postar"])){
+        $acaoId = $_POST["inputId"];
+        $personagemId = $_POST["personagem"];
+        $acaoTexto = $_POST["inputAcao"];
+        if($acaoTexto === ''){
+            echo 'Digite algo para postar a ação.';
+            die();
+        }
+        //Verifica se o id da ação é único no BD:
+        include 'php/_dbconnect.php';
+        $sql = "SELECT stId FROM tbAcoes WHERE stId='$acaoId'";
+        $query = $con->query($sql);
+        if($query->num_rows>0){     //Se o id já existir, avisa o erro:
+            echo 'Erro interno. Tente novamente.';
+            mysqli_close($con);
+            die();
+        }
+        //Insere a ação no BD:
+        $sql = "INSERT INTO tbAcoes(stId, stCena, stMundo, stPersonagem) "
+                . "VALUES ('$acaoId','$cenaId','$mundoId','$personagemId')";
+        $query = $con->query($sql);
+        if(!$query){
+            echo "Erro no query(inserir ação): ".mysqli_error($con);
+            mysqli_close($con);
+            die();
+        }
+        mysqli_close($con);
+        //Cria o arquivo com o texto da ação:
+        $arquivoAberto = fopen("mundos/$mundoId/cenas/$cenaId/$acaoId.php", 'w');
+        fwrite($arquivoAberto, $acaoTexto);
+        fclose($arquivoAberto);
+        header("location: cena.php?mundo=$mundoId&id=$cenaId");
+    }
+?>
 
 <?php include_once 'php/_footer.php'; ?>
