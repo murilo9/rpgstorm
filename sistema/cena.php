@@ -3,6 +3,17 @@
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
 
+<script>
+    function deletarAcao(acaoId, cenaId, mundoId) {
+        if(confirm("Deseja mesmo deletar esta ação?")){
+            document.getElementById("dfAcao").value = acaoId;
+            document.getElementById("dfCena").value = cenaId;
+            document.getElementById("dfMundo").value = mundoId;
+            document.getElementById("formDeletaAcao").submit();
+        }
+    }
+</script>
+
 <?php //Pega as informações básicas do mundo:
     $mundoId = $_GET["mundo"];
     $cenaId = $_GET["id"];
@@ -53,7 +64,7 @@
         fclose($arquivoAberto);
         echo "$cenaDescricao</div>";      //Fecha a div de título de cena
         //Exibe todas as ações desta cena:
-        $sql = "SELECT A.stId AS aId, A.dtData AS aDataHora, P.stNome AS pNome "
+        $sql = "SELECT A.stId AS aId, A.dtData AS aDataHora, P.stNome AS pNome, P.stDono AS pDono "
                 . "FROM tbAcoes A INNER JOIN tbPersonagens P "
                 . "ON A.stPersonagem = P.stId "
                 . "WHERE A.stCena='$cenaId' && A.stMundo='$mundoId'"
@@ -63,6 +74,7 @@
             $acaoId = $dados["aId"];
             $acaoDataHora = $dados["aDataHora"];
             $personagemNome = $dados["pNome"];
+            $personagemDono = $dados["pDono"];
             $acaoTexto = '';
             //Pega o arquivo com o texto da ação:
             $arquivoAberto = fopen("mundos/$mundoId/cenas/$cenaId/$acaoId.php", 'r');
@@ -71,10 +83,22 @@
             }
             fclose($arquivoAberto);
             //Exibe a div de ação:
-            echo "<div class='acaoBox'><h3>$personagemNome</h3><h4>$acaoDataHora</h4>"
-                    . "$acaoTexto</div>";
+            echo "<div class='acaoBox'><h3>$personagemNome</h3><h4>$acaoDataHora</h4>";
+            
+            echo "$acaoTexto";
+            if($personagemDono == $usuarioEmail){
+                echo "<br><button onclick='deletarAcao(".'"'.$acaoId.'","'.$cenaId.'","'.$mundoId.'"'.')'."'>Deletar</button>";
+                //echo "<br><button onclick='function(){deletarAcao($acaoId, $cenaId, $mundoId)}'>Deletar</button>";
+            }
+            echo '</div>';
         }
         mysqli_close($con);
+        //Exibindo form oculta que será submetido ao se deletar uma ação
+        echo "<form id='formDeletaAcao' action='cena.php?mundo=$mundoId&id=$cenaId' method='post'>"
+            ."<input id='dfAcao' name='acao' type='hidden'>"
+            . "<input id='dfCena' name='cena' type='hidden'>"
+            . "<input id='dfMundo' name='mundo' type='hidden'>"
+            . "<input name='deletar' type='hidden' value='true'></form>";
     ?>
     
     <?php   //Verifica se o usuário possui um personagem para poder postar ações:
@@ -105,7 +129,8 @@
     document.getElementById("inputId").value = '_'+Math.floor(Math.random()*99999);
 </script>
 
-<?php   //Processa a postagem de ações:
+<?php   
+    //Processa a postagem de ações:
     if(isset($_POST["postar"])){
         $acaoId = $_POST["inputId"];
         $personagemId = $_POST["personagem"];
@@ -138,6 +163,29 @@
         fwrite($arquivoAberto, $acaoTexto);
         fclose($arquivoAberto);
         header("location: cena.php?mundo=$mundoId&id=$cenaId");
+    }
+    //Processa a deleção de ações:
+    if(isset($_POST["deletar"])){
+        $acaoId = $_POST["acao"];
+        $cenaId = $_POST["cena"];
+        $mundoId = $_POST["mundo"];
+        include 'php/_dbconnect.php';
+        $sql = "DELETE FROM tbAcoes WHERE stId='$acaoId' && stCena='$cenaId' && stMundo='$mundoId'";
+        $query = $con->query($sql);
+        if(!$query){
+            echo "Erro no query(deletar ação): ". mysqli_error($con);
+            mysqli_close($con);
+            die();
+        }
+        //Se chegou até aqui, então deu tudo certo e pode deletar o arquivo com o texto da ação:
+        if(!unlink("mundos/$mundoId/cenas/$cenaId/$acaoId.php")){
+            echo "Erro ao deletar arquivo com texto da ação: "
+            . "mundos/$mundoId/cenas/$cenaId/$acaoId$acaoId.php não encontrado.<br>"
+                    . "A deleção do arquivo agora deve ser feita manualmente no servidor.";
+            die();
+        }
+        header("location: cena.php?mundo=$mundoId&id=$cenaId");
+        mysqli_close($con);
     }
 ?>
 
