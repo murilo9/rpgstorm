@@ -3,6 +3,14 @@
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
 
+<script>
+    function sairMundo(){
+        if(confirm('Deseja mesmo deixar de fazer parte deste mundo?')){
+            document.getElementById("formSair").submit();
+        }
+    }
+</script>
+
 <?php   //Pega as informações básicas do mundo e vê se o usuário está neste mundo:
     $mundoId = $_GET["mundo"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
@@ -61,7 +69,12 @@
                 . "<input type='submit' value='Entrar no Mundo'></form>";
         }else{              //Se o usuário puder entrar, exibe os personagens e cenas:
             include 'php/_dbconnect.php';
-            echo "<h2>$mundoNome</h2>Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>";
+            echo "<h2>$mundoNome</h2><form id='formSair' method='post'>"
+                    . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"    //Exibe form de sair do mundo
+                    . "<input name='mundoId' type='hidden' value='$mundoId'>"
+                    . "<input name='sair' type='hidden' value='true'></form>"
+                    . "<button onclick='sairMundo()'>Sair deste mundo</button><br>"     //Exibe botão de sair do mundo
+                    . "Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>";   //Exibe informações do mundo
             //--TODO exibir lista de staffs
             //--TODO botão para exibir/ocultar modelo de ficha do mundo
             echo "<a href='criarPersonagem.php?mundo=$mundoId'>Criar Personagem</a><br>";
@@ -113,7 +126,7 @@
     ?>
 </div>
 
-<?php   //Processa o pedido de usuário entrar no mundo:
+<?php   //Processa o pedido de usuário entrar ou sair do mundo:
     if(isset($_POST["entra"])){
         include 'php/_dbconnect.php';
         //Verifica se o mundo é publico:
@@ -134,6 +147,21 @@
             //--TODO
         }
         mysqli_close($con);
+    }
+    if(isset($_POST["sair"])){
+        include 'php/_dbconnect.php';
+        $usuarioEmail = $_POST["usuarioId"];
+        $mundoId = $_POST["mundoId"];
+        //Elimina o usuário do mundo no BD:
+        $sql = "DELETE FROM tbMundoUsuarios WHERE stUsuario='$usuarioEmail' && stMundo='$mundoId'";
+        $query = $con->query($sql);
+        if(!$query){
+            echo 'Erro no query(deletar MundoUsuario): '.mysqli_error($con);
+            mysqli_close($con);
+            die();
+        }
+        mysqli_close($con);
+        header("location: selecionaMundo.php");
     }
 ?>
 

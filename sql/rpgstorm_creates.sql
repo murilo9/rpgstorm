@@ -65,3 +65,13 @@ CREATE TABLE tbMundoUsuarios(
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail),
     FOREIGN KEY (stMundo) REFERENCES tbMundos(stId)
 ) ENGINE = innodb;
+
+CREATE TABLE tbNotifs(
+	stId VARCHAR(8),
+	stUsuario VARCHAR(60),
+    stTipo VARCHAR(2) NOT NULL,
+    stLink VARCHAR(100),
+    stConteudo VARCHAR(255),
+    PRIMARY KEY (stId),
+    FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail)
+) ENGINE = innodb;
