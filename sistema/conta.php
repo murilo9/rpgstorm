@@ -1,6 +1,7 @@
 <?php session_start(); //Inicia a session
     //Pega os dados necessários para esta página:
     $usuarioEmail = $_SESSION["usuarioEmail"];
+    $usuarioNome = $_SESSION["usuarioNickname"];
 ?>
 <?php include_once 'php/_header.php'; ?>
 <?php include_once 'php/banner.php'; ?>
@@ -8,6 +9,9 @@
 
 <div class="conteudo" style="text-align: center;">
     <form class="formulario" action="conta.php" method="post">
+        <?php
+            echo "<h3>$usuarioNome</h3>";
+        ?>
         <b>Atualizar Senha</b><br><br>
         Senha Atual:  <input type="password" name="inputSenhaAtual"><br><br>
         Senha Nova:  <input type="password" id="senhaNova" name="inputSenhaNova"><br><br>

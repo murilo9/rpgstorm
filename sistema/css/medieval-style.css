@@ -39,7 +39,9 @@
     padding: 32px;
     background: #e8c96d;
 }
-
+.formulario h3{
+    margin-top: 0px;
+}
 body{
     background: #edd9a8;
     font-family: Calibri;
