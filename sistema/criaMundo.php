@@ -140,7 +140,7 @@
             mysqli_close($con);
             die();
         }
-        $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail','$mundoId')";
+        $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail','$mundoId',true)";
         $query = $con->query($sql);     //Insere o criador do mundo como usuário(que pode entrar) do mundo
         if(!$query){
             echo 'Erro na inserção no banco de dados (tbStaffs): ';

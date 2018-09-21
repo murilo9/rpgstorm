@@ -1,5 +1,5 @@
 USE dbrpgstorm;
-SELECT * FROM tbPersonagens;
+SELECT * FROM tbMundoUsuarios;
 CREATE TABLE tbUsuarios(
 	stEmail VARCHAR(60) NOT NULL,
     stNickname VARCHAR(40) NOT NULL UNIQUE,
@@ -62,12 +62,13 @@ CREATE TABLE tbMundoUsuarios(
 	stUsuario VARCHAR(60),
     stMundo VARCHAR(5),
     PRIMARY KEY (stUsuario, stMundo),
+    blStatus BOOLEAN NOT NULL,
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail),
     FOREIGN KEY (stMundo) REFERENCES tbMundos(stId)
 ) ENGINE = innodb;
 
 CREATE TABLE tbNotifs(
-	stId VARCHAR(8),
+	stId VARCHAR(8) AUTO_INCREMENT,
 	stUsuario VARCHAR(60),
     stTipo VARCHAR(2) NOT NULL,
     stLink VARCHAR(100),
@@ -75,3 +76,5 @@ CREATE TABLE tbNotifs(
     PRIMARY KEY (stId),
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail)
 ) ENGINE = innodb;
+
+SET SQL_SAFE_UPDATES=1;

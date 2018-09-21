@@ -38,6 +38,14 @@
                     mysqli_close($con);
                     die();
                 }
+                //Deleta os personagens:
+                $sql = "DELETE FROM tbPersonagens WHERE stMundo = '$mundoId'";
+                $query = $con->query($sql);
+                if(!$query){
+                    echo "Erro no query(deletar personagens): " . mysqli_error($con);
+                    mysqli_close($con);
+                    die();
+                }
                 //Deleta os staffs:
                 $sql = "DELETE FROM tbStaffs WHERE stMundo = '$mundoId'";
                 $query = $con->query($sql);

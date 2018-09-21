@@ -14,8 +14,10 @@
 <?php   //Pega as informações básicas do mundo e vê se o usuário está neste mundo:
     $mundoId = $_GET["mundo"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
+    $usuarioNome = $_SESSION["usuarioNickname"];
     include 'php/_dbconnect.php';
-    $sql = "SELECT stUsuario FROM tbMundoUsuarios WHERE stUsuario = '$usuarioEmail' && stMundo = '$mundoId'";
+    $sql = "SELECT stUsuario FROM tbMundoUsuarios "
+         . "WHERE stUsuario = '$usuarioEmail' && stMundo = '$mundoId' && blStatus=true";
     $query = $con->query($sql);
     if($query->num_rows>0){     //Caso o usuário esteja neste mundo, deixa ele entrar:
         $mayEnter = true;
@@ -130,21 +132,39 @@
     if(isset($_POST["entra"])){
         include 'php/_dbconnect.php';
         //Verifica se o mundo é publico:
-        $sql = "SELECT blPublic FROM tbMundos WHERE stId='$mundoId'";
+        $sql = "SELECT blPublic, stDono, stNome FROM tbMundos WHERE stId='$mundoId'";
         $query = $con->query($sql);
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $mundoTipo = $dados["blPublic"];
+            $mundoCreator = $dados["stCreator"];
+            $mundoNome = $dados["stNome"];
         }
         if($mundoTipo){     //Se o mundo for público, deixa o usuário entrar e cadastra no BD:
-            $sql = "INSERT INTO tbMundoUsuarios VALUES "
-                    . "('$usuarioEmail', '$mundoId')";
+            $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail', '$mundoId', true)";
             $query = $con->query($sql);
             if(!$query){
                 die("Erro no query: ". mysqli_error($con));
             }
             header("location: escolhaCena.php?mundo=$mundoId");
         }else{      //Se o mundo for privado, apenas manda pedido de entrada:
-            //--TODO
+            $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail','$mundoId', false)";
+            $query = $con->query($sql);
+            if(!$query){
+                echo 'Erro no query(inserir em MundoUsuarios):'.mysqli_error($con);
+                mysqli_close($con);
+                die();
+            }
+            //Cria a notificação pro dono do mundo:
+            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo) "
+                 . "VALUES ('$mundoCreator','SM',null,'$usuarioNome deseja entrar no seu mundo $mundoNome.')";
+            $query = $con->query($sql);
+            if(!$query){
+                echo 'Erro no query(inserir em Notifs):'.mysqli_error($con);
+                mysqli_close($con);
+                die();
+            }
+            echo 'Uma solicitação de entrada foi enviada. Aguarda a aprovação pela staff.';
+            mysqli_close($con);
         }
         mysqli_close($con);
     }
