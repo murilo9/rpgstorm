@@ -31,6 +31,7 @@
     $query = $con->query($sql);
     while($dados = $query->fetch_array(MYSQLI_ASSOC)){
         $mundoNome = $dados["stNome"];
+        $mundoCapa = $dados["stCapa"];
     }
     mysqli_close($con);
 ?>
@@ -53,8 +54,14 @@
             $cenaEstado = $dados["cEstado"];
             $cenaData = $dados["cData"];
             $cenaImagem = $dados["cImagem"];
-            //TODO verificar se a cena possui imagem
-            echo "<div class='cenaBox'><h3>$cenaNome</h3>$cenaData criada por $cenaCreator<br>";
+            echo "<div class='cenaBox'><div class='cenaImagem'>";
+            if($cenaImagem == 'none'){  //Se a cena não tiver imagem, exibe a capa do mundo:
+                echo "<img src='mundos/$mundoId/$mundoCapa'>";
+            }else{      //Se a cena tiver imagem, mostra:
+                echo "<img src='mundos/$mundoId/cenas/$cenaId/$cenaImagem'>";
+            }
+            echo "</div><div class='cenaDados'>";
+            echo "<h3>$cenaNome</h3>$cenaData criada por $cenaCreator<br>";
         }
         //Pega o arquivo com a descrição da cena:
         $cenaDescricao = '';
@@ -63,7 +70,7 @@
             $cenaDescricao .= fgets($arquivoAberto);
         }
         fclose($arquivoAberto);
-        echo "$cenaDescricao</div>";      //Fecha a div de título de cena
+        echo "$cenaDescricao</div></div>";      //Fecha a div de título de cena
         //Exibe todas as ações desta cena:
         $sql = "SELECT A.stId AS aId, A.dtData AS aDataHora, P.stNome AS pNome, "
                 . "P.stDono AS pDono, P.stFoto AS pFoto, P.stId AS pId "

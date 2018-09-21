@@ -136,3 +136,17 @@ body{
     text-decoration: none;
     color: black;
 }
+.cenaImagem{
+    vertical-align: top;
+    display: inline-block;
+    border: 1px solid red;
+}
+.cenaImagem img{
+    width: 440px;
+}
+.cenaDados{
+    vertical-align: top;
+    padding: 10px;
+    display: inline-block;
+    border: 1px solid red;
+}

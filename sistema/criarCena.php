@@ -25,11 +25,15 @@
 ?>
 <div class="conteudo">
     <h2>Criar Cena em <?php echo $mundoNome;?></h2>
-    <?php echo "<form action='criarCena.php?mundo=$mundoId' method='post' class='formulario'>";?>
+    <?php echo "<form action='criarCena.php?mundo=$mundoId' "
+            . "method='post' class='formulario' enctype='multipart/form-data'>";?>
         <input type="hidden" name="publish" value="true">
         <input type="hidden" name="cenaId" id="cenaId">
         <input type="hidden" name="acaoId" id="acaoId">
         Nome da Cena: <input type="text" name="inputNomeCena"><br><br>
+        Imagem da cena (opcional):
+        <input name="arquivo" size="20" type="file"><br>
+        (Cenas sem imagem definida utilizarão a capa do mundo no lugar)<br><br>
         <?php   //Verifica se o usuário possui um personagem neste mundo, e exibe a comboBox
             include 'php/_dbconnect.php';
             $sql = "SELECT * FROM tbPersonagens WHERE stDono = '$usuarioEmail' && stMundo = '$mundoId'";
@@ -66,6 +70,14 @@
         $personagemCena = $_POST["personagem"];
         $descricaoCena = $_POST["descricao"];
         $acaoInicial = $_POST["acao"];
+        if(!empty($_FILES["arquivo"]["name"])){
+            $usarArquivo = true;
+            $uploadDir = "mundos/$mundoId/cenas/$cenaId/";
+            $uploadFileName = $_FILES["arquivo"]["name"];
+            $uploadFile = $uploadDir.$uploadFileName;
+        }else{
+            $usarArquivo = false;
+        }
         //Validação do formato dos dados:
         if($cenaNome===''){
             echo 'Insira um nome para a cena';
@@ -96,9 +108,15 @@
             mysqli_close($con);
             die();
         }
+        //Verifica se a cena vai possuir imagem ou não:
+        if($usarArquivo){    //Se tinha arquivo pra upload
+            $cenaFoto = $uploadFileName;    //Guarda o nome do arquivo pra salvar no BD
+        }else{          //Caso contrário
+            $cenaFoto = 'none';     //Guarda 'none' no BD
+        }
         //Registra a cena no BD:
-        $sql = "INSERT INTO tbCenas(stId,stMundo,stCreator,stNome) VALUES "
-                . "('$cenaId','$mundoId','$personagemCena','$cenaNome')";
+        $sql = "INSERT INTO tbCenas(stId,stMundo,stCreator,stNome,stImagem) VALUES "
+                . "('$cenaId','$mundoId','$personagemCena','$cenaNome','$cenaFoto')";
         $query = $con->query($sql);
         if(!$query){
             echo "Erro no query (publicar cena): ".mysqli_error($con);
@@ -108,6 +126,13 @@
         //Se chegou até aqui, pode criar a pasta da cena no servidor:
         $cenaPath = "mundos/$mundoId/cenas/$cenaId";
         mkdir($cenaPath);
+        //Faz upload da imagem da cena:
+        if($usarArquivo){
+            if(!move_uploaded_file($_FILES["arquivo"]["tmp_name"], $uploadFile)){
+                echo 'Erro ao fazer upload do arquivo';
+                die();
+            }
+        }
         //Cria o arquivo com a descrição da cena:
         $arquivoAberto = fopen("$cenaPath/descricao.php", 'w');
         fwrite($arquivoAberto, $descricaoCena);
