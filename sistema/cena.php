@@ -65,7 +65,8 @@
         fclose($arquivoAberto);
         echo "$cenaDescricao</div>";      //Fecha a div de título de cena
         //Exibe todas as ações desta cena:
-        $sql = "SELECT A.stId AS aId, A.dtData AS aDataHora, P.stNome AS pNome, P.stDono AS pDono "
+        $sql = "SELECT A.stId AS aId, A.dtData AS aDataHora, P.stNome AS pNome, "
+                . "P.stDono AS pDono, P.stFoto AS pFoto, P.stId AS pId "
                 . "FROM tbAcoes A INNER JOIN tbPersonagens P "
                 . "ON A.stPersonagem = P.stId "
                 . "WHERE A.stCena='$cenaId' && A.stMundo='$mundoId'"
@@ -74,8 +75,10 @@
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $acaoId = $dados["aId"];
             $acaoDataHora = $dados["aDataHora"];
+            $personagemId = $dados["pId"];
             $personagemNome = $dados["pNome"];
             $personagemDono = $dados["pDono"];
+            $personagemFoto = $dados["pFoto"];
             $acaoTexto = '';
             //Pega o arquivo com o texto da ação:
             $arquivoAberto = fopen("mundos/$mundoId/cenas/$cenaId/$acaoId.php", 'r');
@@ -84,14 +87,19 @@
             }
             fclose($arquivoAberto);
             //Exibe a div de ação:
-            echo "<div class='acaoBox'><h3>$personagemNome</h3><h4>$acaoDataHora</h4>";
-            
+            echo "<div class='acaoBox'><div class='personagemFoto'>";
+            if($personagemFoto == 'none'){
+                echo "<img src='img/foto-none.jpg'></div>";
+            }else{
+                echo "<img src='mundos/$mundoId/personagens/$personagemId/$personagemFoto'></div>";
+            }
+            echo "<div class='personagemDados'><h3>$personagemNome</h3><h4>$acaoDataHora</h4>";
             echo "$acaoTexto";
             if($personagemDono == $usuarioEmail){
                 echo "<br><button onclick='deletarAcao(".'"'.$acaoId.'","'.$cenaId.'","'.$mundoId.'"'.')'."'>Deletar</button>";
                 //echo "<br><button onclick='function(){deletarAcao($acaoId, $cenaId, $mundoId)}'>Deletar</button>";
             }
-            echo '</div>';
+            echo '</div></div>';
         }
         mysqli_close($con);
         //Exibindo form oculta que será submetido ao se deletar uma ação

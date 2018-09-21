@@ -68,8 +68,28 @@
         if($enterStatus != 'true'){     //Se o usuário não puder entrar, exibe apenas as informações:
             echo "<h2>$mundoNome</h2>Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>"
                     . "<img class='mundoCapa' src='mundos/$mundoId/$capaArquivo'><br><br>$mundoDescricao<br><br>";
-            //--TODO exibir lista de staffs
-            //--TODO exibir modelo de ficha
+            //Exibe lista de staffs:
+            $staffList = 'Staffs:<br>';
+            include 'php/_dbconnect.php';
+            $sql = "SELECT U.stNickname AS uNome FROM tbStaffs S INNER JOIN tbUsuarios U "
+                    . "ON S.stUsuario = U.stEmail WHERE S.stMundo='$mundoId'";
+            $query = $con->query($sql);
+            if(!$query){
+                echo mysqli_error($con);
+            }
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                $staffList .= $dados["uNome"].'<br>';
+            }
+            echo "$staffList<br>";
+            mysqli_close($con);
+            //Exibe modelo de ficha:
+            $ficha = '';
+            $arquivoAberto = fopen("mundos/$mundoId/ficha.php", 'r');
+            while(!feof($arquivoAberto)){
+                $ficha .= fgets($arquivoAberto);
+            }
+            echo "Modelo de ficha:<br><div class='formulario'>$ficha</div><br><br>";
+            fclose($arquivoAberto);
             if($enterStatus == 'unsolicited'){    //Exibe a opção de pedir parar entrar no mundo:
                 echo "<form method='post'>"
                     . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"

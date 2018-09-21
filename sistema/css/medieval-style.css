@@ -103,7 +103,24 @@ body{
 }
 .acaoBox{
     border: 1px solid black;
-    padding: 20px;
+    padding: 10px;
+}
+.personagemFoto{
+    vertical-align: top;
+    display: inline-block;
+    border: 1px solid red;
+}
+.personagemFoto img{
+    width: 128px;
+}
+.personagemDados{
+    vertical-align: top;
+    padding: 10px;
+    display: inline-block;
+    border: 1px solid red;
+}
+.personagemDados h3{
+    margin: 0px;
 }
 .notifBox{
     border: 1px solid black;
