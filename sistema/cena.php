@@ -39,7 +39,7 @@
     <?php   //Exibe a descrição da cena e as ações:
         include 'php/_dbconnect.php';
         //Pega informações básicas da cena no BD:
-        $sql = "SELECT C.stId AS cId, C.stNome AS cNome, C.stCreator, C.blEstado AS cEstado, "
+        $sql = "SELECT C.stId AS cId, C.stNome AS cNome, C.stCreator AS cCreator, C.blEstado AS cEstado, "
                     . "C.dtData cData, C.stImagem AS cImagem, P.stNome AS pNome "
                     . "FROM tbCenas C INNER JOIN tbPersonagens P "
                     . "ON C.stCreator = P.stId WHERE C.stMundo='$mundoId' && C.stId='$cenaId'"
@@ -49,6 +49,7 @@
             $cenaId = $dados["cId"];
             $cenaNome = $dados["cNome"];
             $cenaCreator = $dados["pNome"];
+            $cenaCreatorId = $dados["cCreator"];
             $cenaEstado = $dados["cEstado"];
             $cenaData = $dados["cData"];
             $cenaImagem = $dados["cImagem"];
@@ -156,6 +157,24 @@
             echo "Erro no query(inserir ação): ".mysqli_error($con);
             mysqli_close($con);
             die();
+        }
+        //Cria a notificação pro dono da cena (a menos que o próprio dono tenha postado):
+        $sql = "SELECT U.stEmail AS uId FROM tbPersonagens P INNER JOIN tbUsuarios U "
+                . "ON P.stDono = U.stEmail WHERE P.stId='$cenaCreatorId'";  //Pega o id do dono da cena
+        $query = $con->query($sql);
+        while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+            $donoCena = $dados["uId"];
+        }
+        if($donoCena != $usuarioEmail){     //Verifica se quem postou não é dono da cena
+            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo) "
+                    . "VALUES ('$donoCena','ML','cena.php?id=$cenaId&mundo=$mundoId',"
+                    . "'$personagemNome postou uma ação na sua cena $cenaNome em $mundoNome.')";    //Insere a notif no BD
+            $query = $con->query($sql);
+            if(!$query){
+                echo "Erro no query(deletar ação): ". mysqli_error($con);
+                mysqli_close($con);
+                die();
+            }
         }
         mysqli_close($con);
         //Cria o arquivo com o texto da ação:

@@ -38,7 +38,6 @@
                         echo 'no type';
                         break;
                 }
-                echo "<div class='notifBox></div>'";
             }
         }else{
             echo 'Não há notificações recentes.';
