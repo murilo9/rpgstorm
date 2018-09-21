@@ -132,7 +132,7 @@
     if(isset($_POST["entra"])){
         include 'php/_dbconnect.php';
         //Verifica se o mundo é publico:
-        $sql = "SELECT blPublic, stDono, stNome FROM tbMundos WHERE stId='$mundoId'";
+        $sql = "SELECT blPublic, stCreator, stNome FROM tbMundos WHERE stId='$mundoId'";
         $query = $con->query($sql);
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $mundoTipo = $dados["blPublic"];
@@ -140,7 +140,7 @@
             $mundoNome = $dados["stNome"];
         }
         if($mundoTipo){     //Se o mundo for público, deixa o usuário entrar e cadastra no BD:
-            $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail', '$mundoId', true)";
+            $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail', '$mundoId', true,'$mundoCreator')";
             $query = $con->query($sql);
             if(!$query){
                 die("Erro no query: ". mysqli_error($con));
