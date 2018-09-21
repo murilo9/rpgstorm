@@ -147,6 +147,7 @@
 <?php   //Processa o pedido de usuário entrar ou sair do mundo:
     if(isset($_POST["entra"])){
         include 'php/_dbconnect.php';
+        $usuarioEmail = $_POST["usuarioId"];
         //Verifica se o mundo é publico:
         $sql = "SELECT blPublic, stCreator, stNome FROM tbMundos WHERE stId='$mundoId'";
         $query = $con->query($sql);
@@ -171,15 +172,16 @@
                 die();
             }
             //Cria a notificação pro dono do mundo:
-            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo) "
-                 . "VALUES ('$mundoCreator','SM',null,'$usuarioNome deseja entrar no seu mundo $mundoNome.')";
+            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo, etc1, etc2) "
+                 . "VALUES ('$mundoCreator','SM',null,'$usuarioNome deseja entrar no seu mundo $mundoNome.',"
+                    . "'$usuarioEmail','$mundoId')";
             $query = $con->query($sql);
             if(!$query){
                 echo 'Erro no query(inserir em Notifs):'.mysqli_error($con);
                 mysqli_close($con);
                 die();
             }
-            echo 'Uma solicitação de entrada foi enviada. Aguarda a aprovação pela staff.';
+            header("location: escolhaCena.php?mundo=$mundoId");
         }
         mysqli_close($con);
     }
