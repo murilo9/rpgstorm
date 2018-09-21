@@ -105,3 +105,15 @@ body{
     border: 1px solid black;
     padding: 20px;
 }
+.notifBox{
+    border: 1px solid black;
+    padding: 10px;
+}
+.notifBorder a:visited{
+    text-decoration: none;
+    color: black;
+}
+.notifBorder a:link{
+    text-decoration: none;
+    color: black;
+}

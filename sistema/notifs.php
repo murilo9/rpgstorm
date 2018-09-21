@@ -30,6 +30,10 @@
                             . "<input type='submit' value='Rejeitar'></form><br>"
                             . "$notifData</div>";
                         break;
+                    case 'ML':
+                        echo "<div class='notifBorder'><a href='$notifLink' class='notif'>"
+                        . "<div class='notifBox'>$notifConteudo<br>$notifData</div></a></div>";
+                        break;
                     default:
                         echo 'no type';
                         break;
@@ -67,7 +71,16 @@
                 mysqli_close($con);
                 die();
             }
-            echo "Update MundoUsuarios pra true, aproved by $usuarioEmail";
+            //Gera notificação para o usuário que foi aceito:
+            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo) "
+                    . "VALUES ('$notifUsuario','ML','escolhaCena.php?mundo=$notifMundo',"
+                    . "'Sua solicitação para entrar no mundo $notifMundo foi aceita.')";
+            $query = $con->query($sql);
+            if(!$query){
+                echo 'Erro no query(criar notificação de resposta): '.mysqli_error($con);
+                mysqli_close($con);
+                die();
+            }
         }else{      //Rejeita o usuário no mundo, elimina do BD:
             $sql = "DELETE FROM tbMundoUsuarios WHERE stMundo='$notifMundo' && stUsuario='$notifUsuario'";
             $query = $con->query($sql);
