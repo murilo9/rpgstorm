@@ -16,13 +16,19 @@
     $usuarioEmail = $_SESSION["usuarioEmail"];
     $usuarioNome = $_SESSION["usuarioNickname"];
     include 'php/_dbconnect.php';
-    $sql = "SELECT stUsuario FROM tbMundoUsuarios "
-         . "WHERE stUsuario = '$usuarioEmail' && stMundo = '$mundoId' && blStatus=true";
+    $sql = "SELECT stUsuario, blStatus FROM tbMundoUsuarios "
+         . "WHERE stUsuario = '$usuarioEmail' && stMundo = '$mundoId'";
     $query = $con->query($sql);
     if($query->num_rows>0){     //Caso o usuário esteja neste mundo, deixa ele entrar:
-        $mayEnter = true;
+        while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+            if($dados["blStatus"]==1){
+                $enterStatus = 'true';      //Pode entrar
+            }else if($dados["blStatus"]==0){
+                $enterStatus = 'solicited';     //Aguardando solicitação já enviada
+            }
+        }
     }else{                      //Caso contrário, não:
-        $mayEnter = false;
+        $enterStatus = 'unsolicited';       //Solicitação não enviada
     }
     //Pega as informações do mundo que estão no DB:
     $sql = "SELECT * FROM tbMundos WHERE stId = '$mundoId'";
@@ -59,16 +65,19 @@
 
 <div class="conteudo">
     <?php
-        if(!$mayEnter){     //Se o usuário não puder entrar, exibe apenas as informações:
+        if($enterStatus != 'true'){     //Se o usuário não puder entrar, exibe apenas as informações:
             echo "<h2>$mundoNome</h2>Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>"
                     . "<img class='mundoCapa' src='mundos/$mundoId/$capaArquivo'><br><br>$mundoDescricao<br><br>";
             //--TODO exibir lista de staffs
             //--TODO exibir modelo de ficha
-            //Exibe a opção de pedir parar entrar no mundo:
-            echo "<form method='post'>"
-                . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"
-                . "<input name='entra' type='hidden' value='true'>"
-                . "<input type='submit' value='Entrar no Mundo'></form>";
+            if($enterStatus == 'unsolicited'){    //Exibe a opção de pedir parar entrar no mundo:
+                echo "<form method='post'>"
+                    . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"
+                    . "<input name='entra' type='hidden' value='true'>"
+                    . "<input type='submit' value='Entrar no Mundo'></form>";
+            }else if($enterStatus == 'solicited'){  //Exibe a mensagem de aguardo:
+                echo 'Uma solciitação de entrada foi enviada. Aguarde a aprovação pela staff.';
+            }
         }else{              //Se o usuário puder entrar, exibe os personagens e cenas:
             include 'php/_dbconnect.php';
             echo "<h2>$mundoNome</h2><form id='formSair' method='post'>"
