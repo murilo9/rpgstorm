@@ -75,6 +75,10 @@ CREATE TABLE tbNotifs(
     stTipo VARCHAR(2) NOT NULL,
     stLink VARCHAR(100),
     stConteudo VARCHAR(255),
+    dtData DATETIME DEFAULT NOW(),
+    etc1 VARCHAR(80),
+    etc2 VARCHAR(80),
+    etc3 VARCHAR(80),
     PRIMARY KEY (stId),
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail)
 ) ENGINE = innodb;
