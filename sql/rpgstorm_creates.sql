@@ -1,5 +1,5 @@
 USE dbrpgstorm;
-SELECT * FROM tbMundoUsuarios;
+SELECT * FROM tbMundos;
 CREATE TABLE tbUsuarios(
 	stEmail VARCHAR(60) NOT NULL,
     stNickname VARCHAR(40) NOT NULL UNIQUE,
@@ -62,7 +62,7 @@ CREATE TABLE tbMundoUsuarios(
 	stUsuario VARCHAR(60),
     stMundo VARCHAR(5),
     blStatus BOOLEAN NOT NULL,
-    stAprovedBy VARCHAR(60) NOT NULL,
+    stAprovedBy VARCHAR(60),
     PRIMARY KEY (stUsuario, stMundo),
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail),
     FOREIGN KEY (stMundo) REFERENCES tbMundos(stId),

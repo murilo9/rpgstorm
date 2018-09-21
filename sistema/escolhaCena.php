@@ -147,7 +147,7 @@
             }
             header("location: escolhaCena.php?mundo=$mundoId");
         }else{      //Se o mundo for privado, apenas manda pedido de entrada:
-            $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail','$mundoId', false)";
+            $sql = "INSERT INTO tbMundoUsuarios VALUES ('$usuarioEmail','$mundoId', false, null)";
             $query = $con->query($sql);
             if(!$query){
                 echo 'Erro no query(inserir em MundoUsuarios):'.mysqli_error($con);
@@ -164,7 +164,6 @@
                 die();
             }
             echo 'Uma solicitação de entrada foi enviada. Aguarda a aprovação pela staff.';
-            mysqli_close($con);
         }
         mysqli_close($con);
     }
