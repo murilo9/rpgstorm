@@ -61,10 +61,12 @@ CREATE TABLE tbStaffs(
 CREATE TABLE tbMundoUsuarios(
 	stUsuario VARCHAR(60),
     stMundo VARCHAR(5),
-    PRIMARY KEY (stUsuario, stMundo),
     blStatus BOOLEAN NOT NULL,
+    stAprovedBy VARCHAR(60) NOT NULL,
+    PRIMARY KEY (stUsuario, stMundo),
     FOREIGN KEY (stUsuario) REFERENCES tbUsuarios(stEmail),
-    FOREIGN KEY (stMundo) REFERENCES tbMundos(stId)
+    FOREIGN KEY (stMundo) REFERENCES tbMundos(stId),
+    FOREIGN KEY (stAprovedBy) REFERENCES tbStaffs(stUsuario)
 ) ENGINE = innodb;
 
 CREATE TABLE tbNotifs(
