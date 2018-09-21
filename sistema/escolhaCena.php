@@ -80,12 +80,19 @@
             }
         }else{              //Se o usuário puder entrar, exibe os personagens e cenas:
             include 'php/_dbconnect.php';
-            echo "<h2>$mundoNome</h2><form id='formSair' method='post'>"
+            echo "<h2>$mundoNome</h2>";
+            //Exibe o botão de sair do mundo (caso o usuário não seja o dono):
+            if($mundoCreator != $usuarioEmail){
+                echo "<form id='formSair' method='post'>"
                     . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"    //Exibe form de sair do mundo
                     . "<input name='mundoId' type='hidden' value='$mundoId'>"
                     . "<input name='sair' type='hidden' value='true'></form>"
-                    . "<button onclick='sairMundo()'>Sair deste mundo</button><br>"     //Exibe botão de sair do mundo
-                    . "Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>";   //Exibe informações do mundo
+                    . "<button onclick='sairMundo()'>Sair deste mundo</button><br>";     //Exibe botão de sair do mundo
+                echo "Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>";   //Exibe informações do mundo
+            }else{
+                echo "Mundo $mundoTipo<br>Criado por você<br><br>";   //Exibe informações do mundo
+            }
+            
             //--TODO exibir lista de staffs
             //--TODO botão para exibir/ocultar modelo de ficha do mundo
             echo "<a href='criarPersonagem.php?mundo=$mundoId'>Criar Personagem</a><br>";
