@@ -100,7 +100,8 @@
             }else{
                 echo "<img src='mundos/$mundoId/personagens/$personagemId/$personagemFoto'></div>";
             }
-            echo "<div class='personagemDados'><h3>$personagemNome</h3><h4>$acaoDataHora</h4>";
+            echo "<div class='personagemDados'><a href='infoPersonagem.php?id=$personagemId'>"
+            . "<h3>$personagemNome</h3></a><h4>$acaoDataHora</h4>";
             echo "$acaoTexto";
             if($personagemDono == $usuarioEmail){
                 echo "<br><button onclick='deletarAcao(".'"'.$acaoId.'","'.$cenaId.'","'.$mundoId.'"'.')'."'>Deletar</button>";
