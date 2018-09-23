@@ -1,10 +1,7 @@
 <?php session_start(); ?>
-<?php include_once 'php/_header.php'; ?>
-<?php include_once 'php/banner.php'; ?>
-<?php include_once 'php/menu.php'; ?>
-
-
-<?php //Pega as informações básicas do mundo:
+<?php 
+    include_once 'php/sessionVerif.php';
+    //Pega as informações básicas do mundo:
     $mundoId = $_GET["mundo"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
     include 'php/_dbconnect.php';
@@ -23,6 +20,10 @@
     }
     mysqli_close($con);
 ?>
+<?php include_once 'php/_header.php'; ?>
+<?php include_once 'php/banner.php'; ?>
+<?php include_once 'php/menu.php'; ?>
+
 <div class="conteudo">
     <h2>Criar Cena em <?php echo $mundoNome;?></h2>
     <?php echo "<form action='criarCena.php?mundo=$mundoId' "

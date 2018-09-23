@@ -1,20 +1,7 @@
 <?php session_start(); ?>
-<?php include_once 'php/_header.php'; ?>
-<?php include_once 'php/banner.php'; ?>
-<?php include_once 'php/menu.php'; ?>
-
-<script>
-    function deletarAcao(acaoId, cenaId, mundoId) {
-        if(confirm("Deseja mesmo deletar esta ação?")){
-            document.getElementById("dfAcao").value = acaoId;
-            document.getElementById("dfCena").value = cenaId;
-            document.getElementById("dfMundo").value = mundoId;
-            document.getElementById("formDeletaAcao").submit();
-        }
-    }
-</script>
-
-<?php //Pega as informações básicas do mundo:
+<?php 
+    include_once 'php/sessionVerif.php';
+    //Pega as informações básicas do mundo:
     $mundoId = $_GET["mundo"];
     $cenaId = $_GET["id"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
@@ -35,6 +22,22 @@
     }
     mysqli_close($con);
 ?>
+<?php include_once 'php/_header.php'; ?>
+<?php include_once 'php/banner.php'; ?>
+<?php include_once 'php/menu.php'; ?>
+
+<script>
+    function deletarAcao(acaoId, cenaId, mundoId) {
+        if(confirm("Deseja mesmo deletar esta ação?")){
+            document.getElementById("dfAcao").value = acaoId;
+            document.getElementById("dfCena").value = cenaId;
+            document.getElementById("dfMundo").value = mundoId;
+            document.getElementById("formDeletaAcao").submit();
+        }
+    }
+</script>
+
+
 
 <div class="conteudo">
     <?php   //Exibe a descrição da cena e as ações:

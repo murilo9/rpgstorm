@@ -1,17 +1,7 @@
 <?php session_start(); ?>
-<?php include_once 'php/_header.php'; ?>
-<?php include_once 'php/banner.php'; ?>
-<?php include_once 'php/menu.php'; ?>
-
-<script>
-    function sairMundo(){
-        if(confirm('Deseja mesmo deixar de fazer parte deste mundo?')){
-            document.getElementById("formSair").submit();
-        }
-    }
-</script>
-
-<?php   //Pega as informações básicas do mundo e vê se o usuário está neste mundo:
+<?php   
+    include_once 'php/sessionVerif.php';
+    //Pega as informações básicas do mundo e vê se o usuário está neste mundo:
     $mundoId = $_GET["mundo"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
     $usuarioNome = $_SESSION["usuarioNickname"];
@@ -62,6 +52,17 @@
     }
     fclose($arquivoAberto);
 ?>
+<?php include_once 'php/_header.php'; ?>
+<?php include_once 'php/banner.php'; ?>
+<?php include_once 'php/menu.php'; ?>
+
+<script>
+    function sairMundo(){
+        if(confirm('Deseja mesmo deixar de fazer parte deste mundo?')){
+            document.getElementById("formSair").submit();
+        }
+    }
+</script>
 
 <div class="conteudo">
     <?php

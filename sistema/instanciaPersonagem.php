@@ -1,4 +1,4 @@
-<?php
+<?php   //Arquivo pro Ajax
     $personagemNome = $_POST["personagemNome"];
     $ficha = $_POST["ficha"];
     $personagemId = $_POST["id"];

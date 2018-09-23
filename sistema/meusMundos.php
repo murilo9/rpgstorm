@@ -1,4 +1,6 @@
-<?php session_start(); //Inicia a session
+<?php session_start(); ?>
+<?php
+    include_once 'php/sessionVerif.php';
     //Pega os dados necessários para esta página:
     $usuarioEmail = $_SESSION["usuarioEmail"];
 ?>
