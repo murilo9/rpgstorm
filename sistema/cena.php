@@ -49,6 +49,11 @@
                     . "ON C.stCreator = P.stId WHERE C.stMundo='$mundoId' && C.stId='$cenaId'"
                     . "ORDER BY dtData";
         $query = $con->query($sql);
+        if($query->num_rows==0){
+            echo 'Cena inexistente.';
+            mysqli_close($con);
+            die();
+        }
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $cenaId = $dados["cId"];
             $cenaNome = $dados["cNome"];
@@ -76,10 +81,10 @@
         echo "$cenaDescricao</div></div>";      //Fecha a div de título de cena
         //Exibe todas as ações desta cena:
         $sql = "SELECT A.stId AS aId, A.dtData AS aDataHora, P.stNome AS pNome, "
-                . "P.stDono AS pDono, P.stFoto AS pFoto, P.stId AS pId "
+                . "P.stDono AS pDono, P.stFoto AS pFoto, P.stId AS pId, P.stMundo AS pMundo "
                 . "FROM tbAcoes A INNER JOIN tbPersonagens P "
                 . "ON A.stPersonagem = P.stId "
-                . "WHERE A.stCena='$cenaId' && A.stMundo='$mundoId'"
+                . "WHERE A.stCena='$cenaId' && A.stMundo='$mundoId' "
                 . "ORDER BY A.dtData";
         $query = $con->query($sql);
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
@@ -89,6 +94,7 @@
             $personagemNome = $dados["pNome"];
             $personagemDono = $dados["pDono"];
             $personagemFoto = $dados["pFoto"];
+            $personagemMundoId = $dados["pMundo"];
             $acaoTexto = '';
             //Pega o arquivo com o texto da ação:
             $arquivoAberto = fopen("mundos/$mundoId/cenas/$cenaId/$acaoId.php", 'r');
@@ -103,7 +109,7 @@
             }else{
                 echo "<img src='mundos/$mundoId/personagens/$personagemId/$personagemFoto'></div>";
             }
-            echo "<div class='personagemDados'><a href='infoPersonagem.php?id=$personagemId'>"
+            echo "<div class='personagemDados'><a href='infoPersonagem.php?id=$personagemId&mundo=$personagemMundoId'>"
             . "<h3>$personagemNome</h3></a><h4>$acaoDataHora</h4>";
             echo "$acaoTexto";
             if($personagemDono == $usuarioEmail){

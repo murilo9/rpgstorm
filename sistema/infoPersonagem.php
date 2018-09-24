@@ -7,20 +7,23 @@
 <div class="conteudo">
     <?php
         $personagemId = $_GET["id"];
+        $personagemMundoId = $_GET["mundo"];
         include 'php/_dbconnect.php';
         $usuarioEmail = $_SESSION["usuarioEmail"];
+        //Verifica se o personagem pertence a este usuário:
         $sql = "SELECT stId FROM tbPersonagens WHERE stId='$personagemId' && stDono = '$usuarioEmail'";
         $query = $con->query($sql);
-        if($query->num_rows==0){
+        if($query->num_rows==0){    //Se o usuário não é dono deste personagem, mostra parcial:
             $viewMode = 'parcial';
-        }else{
+        }else{          //Se o usuário é dono deste personagem, mostra tudo:
             $viewMode = 'full';
         }
         //Se chegou até aqui, pode pegar as informações do personagem no BD:
-        $sql = "SELECT P.stNome AS pNome, P.stMundo AS pMundoId, M.stNome AS mNome, U.stNickname AS uNome "
+        $sql = "SELECT P.stNome AS pNome, P.stMundo AS pMundoId, M.stNome AS mNome, "
+                . "U.stNickname AS uNome, U.stEmail AS uEmail "
                 . "FROM tbPersonagens P INNER JOIN tbMundos M INNER JOIN tbUsuarios U "
                 . "ON P.stMundo = M.stId && P.stDono = U.stEmail "
-                . "WHERE P.stId='$personagemId'";
+                . "WHERE P.stId='$personagemId' && P.stMundo='$personagemMundoId'";
         $query = $con->query($sql);
         while($dados = $query->fetch_array(MYSQLI_ASSOC)){
             $personagemNome = $dados["pNome"];
@@ -28,8 +31,10 @@
             $personagemMundoId = $dados["pMundoId"];
             if($dados["uNome"] == 'none'){
                 $personagemDono = 'Ninguém';
+                $personagemDonoId = 'none';
             }else{
                 $personagemDono = $dados["uNome"];
+                $personagemDonoId = $dados["uEmail"];
             }
         }
         mysqli_close($con);
@@ -62,7 +67,9 @@
                 . "<input type='submit' value='Atualizar Retrato'></form>";
         }
         //Exibe todos os dados:
-        echo "<h2>$personagemNome</h2>Mundo: $personagemMundo<br>Dono: $personagemDono<br>";
+        echo "<h2>$personagemNome</h2>Mundo: $personagemMundo<br>"
+                . "Dono: <form method='post'><input name='id' type='hidden' value='$personagemDonoId'>"
+                . "<input type='submit' value='$personagemDono'></form><br>";
         if($viewMode == 'full'){
                 echo "<form action='deletaPersonagem.php' method='post'>"
                 . "<input type='hidden' name='id' value='$personagemId'>"
