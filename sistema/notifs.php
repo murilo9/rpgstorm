@@ -31,9 +31,13 @@
                             . "<input type='submit' value='Rejeitar'></form><br>"
                             . "$notifData</div>";
                         break;
-                    case 'ML':
-                        echo "<div class='notifBorder'><a href='$notifLink' class='notif'>"
-                        . "<div class='notifBox'>$notifConteudo<br>$notifData</div></a></div>";
+                    case 'ML':  //Exibe o divDelete[x] e o conteúdo:
+                        echo "<div class='notifDelete'>"
+                            . "<form method='post'><input name='id' type='hidden' value='$notifId'>"
+                            . "<input type='hidden' name='notifDelete' value='true'>"
+                            . "<input type='submit' value='X'></form></div>"
+                            . "<div class='notifBorder'><a href='$notifLink' class='notif'>"
+                        . "<div class='notifBox'>$notifConteudo<br>$notifData</div></a></div><br>";
                         break;
                     default:
                         echo 'no type';
@@ -48,10 +52,9 @@
 </div>
 
 <?php   //Processa o resultado das forms das notificações:
-    if(isset($_POST["resposta"])){
+    if(isset($_POST["resposta"])){      //Se for pra processar resposta de SM:
         $resposta = $_POST["resposta"];
         $notifId = $_POST["notifId"];
-        echo $resposta;
         include 'php/_dbconnect.php';
         //Pega o etc1(usuarioEmail) e etc2(mundoId) da tupla de notificação:
         $sql = "SELECT etc1, etc2 FROM tbNotifs WHERE stId=$notifId";
@@ -96,6 +99,20 @@
         $query = $con->query($sql);
         mysqli_close($con);
         header("location: notifs.php");
+    }
+    else if(isset ($_POST["notifDelete"])){    //Se for pra deletar notificação:
+        $notifId = $_POST["id"];
+        include 'php/_dbconnect.php';
+        $sql = "DELETE FROM tbNotifs WHERE stId='$notifId'";
+        $query = $con->query($sql);
+        if(!$query){
+            echo 'Erro no query(deletar notificação): '.mysqli_error($con);
+            mysqli_close($con);
+            die();
+        }else{
+            header("location: notifs.php");
+        }
+        mysqli_close($con);
     }
 ?>
 

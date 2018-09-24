@@ -127,6 +127,10 @@ body{
 .notifBox{
     border: 1px solid black;
     padding: 10px;
+    display: inline-block;
+}
+.notifBorder{
+    display: inline-block;
 }
 .notifBorder a:visited{
     text-decoration: none;
@@ -135,6 +139,12 @@ body{
 .notifBorder a:link{
     text-decoration: none;
     color: black;
+}
+.notifDelete{
+    display: inline-block;
+}
+.notifDelete form{
+    display: inline-block;
 }
 .cenaImagem{
     vertical-align: top;
