@@ -30,7 +30,8 @@
                 $cenaPersonagem = $dados["pNome"];
                 echo "<div class='cenaBox'><a href='cena.php?mundo=$cenaMundoId&id=$cenaId'>"
                         . "<h2>$cenaNome</h2></a>"
-                . "<h3>Em $cenaMundo criada em $cenaData por $cenaPersonagem</h3></div>";
+                . "<h3>Em <a href='escolhaCena.php?mundo=$cenaMundoId'>$cenaMundo</a>"
+                        . " criada em $cenaData por $cenaPersonagem</h3></div>";
             }
         }else{
             echo 'Você não possui cenas em mundo algum.';

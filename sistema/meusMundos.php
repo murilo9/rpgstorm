@@ -51,7 +51,7 @@
                 }
                 //Exibe os dados do mundo
                 echo "<div class='mundoBox'>".
-                        "<b>$mundoNome</b> <br>$mundoTipo<br>Staffs: $staffList<br>Cenas: $cenasQntd<br>"
+                        "<b><a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a></b> <br>$mundoTipo<br>Staffs: $staffList<br>Cenas: $cenasQntd<br>"
                         . "<form action='deletaMundo.php' method='post'>"
                             . "<input type='hidden' name='inputId' value='$mundoId'>"
                             . "<input type='submit' value='Deletar'>"
