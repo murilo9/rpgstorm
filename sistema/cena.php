@@ -62,6 +62,9 @@
             $cenaEstado = $dados["cEstado"];
             $cenaData = $dados["cData"];
             $cenaImagem = $dados["cImagem"];
+            //Exibe o retorno ao mundo:
+            echo "Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a>";
+            //Exibe a cenaBox:
             echo "<div class='cenaBox'><div class='cenaImagem'>";
             if($cenaImagem == 'none'){  //Se a cena não tiver imagem, exibe a capa do mundo:
                 echo "<img src='mundos/$mundoId/$mundoCapa'>";
@@ -146,6 +149,8 @@
             echo 'Voce precisar ter ao menos um personagem neste mundo para postar ações.';
         }
         mysqli_close($con);
+        //Exibe o retorno ao mundo (de novo):
+        echo "Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a>";
     ?>
 </div>
 
