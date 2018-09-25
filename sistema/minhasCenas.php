@@ -31,7 +31,11 @@
                 echo "<div class='cenaBox'><a href='cena.php?mundo=$cenaMundoId&id=$cenaId'>"
                         . "<h2>$cenaNome</h2></a>"
                 . "<h3>Em <a href='escolhaCena.php?mundo=$cenaMundoId'>$cenaMundo</a>"
-                        . " criada em $cenaData por $cenaPersonagem</h3></div>";
+                        . " criada em $cenaData por $cenaPersonagem</h3>"
+                        . "<form action='deletaCena.php' method='post'>"
+                        . "<input name='mundo' type='hidden' value='$cenaMundo'>"
+                        . "<input name='id' type='hidden' value='$cenaId'>"
+                        . "<input type='submit' value='Deletar'></form></div>";
             }
         }else{
             echo 'Você não possui cenas em mundo algum.';

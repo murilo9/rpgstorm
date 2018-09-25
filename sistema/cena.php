@@ -63,7 +63,7 @@
             $cenaData = $dados["cData"];
             $cenaImagem = $dados["cImagem"];
             //Exibe o retorno ao mundo:
-            echo "Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a>";
+            echo "<h4>Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a></h4>";
             //Exibe a cenaBox:
             echo "<div class='cenaBox'><div class='cenaImagem'>";
             if($cenaImagem == 'none'){  //Se a cena não tiver imagem, exibe a capa do mundo:
@@ -146,11 +146,11 @@
             echo "</select><br><textarea name='inputAcao' cols='70' rows='10'></textarea>"
             . "<br><input type='submit' value='Postar'></form>";
         }else{      //Se o usuário não tiver personagens, não exibe o form:
-            echo 'Voce precisar ter ao menos um personagem neste mundo para postar ações.';
+            echo 'Voce precisar ter ao menos um personagem neste mundo para postar ações.<br>';
         }
         mysqli_close($con);
         //Exibe o retorno ao mundo (de novo):
-        echo "Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a>";
+        echo "<h4>Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a></h4>";
     ?>
 </div>
 
@@ -188,22 +188,53 @@
             mysqli_close($con);
             die();
         }
-        //Cria a notificação pro dono da cena (a menos que o próprio dono tenha postado):
-        $sql = "SELECT U.stEmail AS uId FROM tbPersonagens P INNER JOIN tbUsuarios U "
-                . "ON P.stDono = U.stEmail WHERE P.stId='$cenaCreatorId'";  //Pega o id do dono da cena
+        //Torna o usuário um participante caso ele ainda não seja
+        $registrar = true;
+        $sql = "SELECT stUsuario FROM tbCenasUsuarios WHERE stCena='$cenaId' && stMundo='$mundoId'";
         $query = $con->query($sql);
-        while($dados = $query->fetch_array(MYSQLI_ASSOC)){
-            $donoCena = $dados["uId"];
+        if($query){
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                if($dados["stUsuario"] == $usuarioEmail){
+                    $registrar = false;
+                }
+            }
+        }else{
+            echo "Erro no query(verificar participante da cena): ". mysqli_error($con);
+            mysqli_close($con);
+            die();
         }
-        if($donoCena != $usuarioEmail){     //Verifica se quem postou não é dono da cena
-            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo) "
-                    . "VALUES ('$donoCena','ML','cena.php?id=$cenaId&mundo=$mundoId',"
-                    . "'$personagemNome postou uma ação na sua cena $cenaNome em $mundoNome.')";    //Insere a notif no BD
+        if($registrar){
+            $sql = "INSERT INTO tbCenasUsuarios VALUES ('$cenaId','$mundoId','$usuarioEmail')";
             $query = $con->query($sql);
             if(!$query){
-                echo "Erro no query(deletar ação): ". mysqli_error($con);
+                echo "Erro no query(registrar participante da cena): ". mysqli_error($con);
                 mysqli_close($con);
                 die();
+            } 
+        }
+        //Cria a notificação pros usuários que participam da cena, exceto pro próprio usuário que postou:
+        $sql = "SELECT stUsuario FROM tbCenasUsuarios "    //Pega os participantes da cena
+                . "WHERE stCena='$cenaId' && stMundo='$mundoId'";
+        $query = $con->query($sql);
+        if(!$query){
+            echo "Erro no query(pegar os participantes da cena): ". mysqli_error($con);
+            mysqli_close($con);
+            die();
+        }
+        if($query->num_rows>0){
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                $participante = $dados["stUsuario"];
+                if($participante != $usuarioEmail){     //Só envia notiff se não for o próprio usuário
+                    $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo) "
+                            . "VALUES ('$participante','ML','cena.php?id=$cenaId&mundo=$mundoId',"
+                            . "'$personagemNome postou uma ação na cena $cenaNome em $mundoNome.')";    //Insere a notif no BD
+                    $query2 = $con->query($sql);
+                    if(!$query2){
+                        echo "Erro no query(registrar notiff pros participantes): ". mysqli_error($con);
+                        mysqli_close($con);
+                        die();
+                    } 
+                }
             }
         }
         mysqli_close($con);

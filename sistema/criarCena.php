@@ -124,6 +124,14 @@
             mysqli_close($con);
             die;
         }
+        //Registra o criador como participante da cena:
+        $sql = "INSERT INTO tbCenasUsuarios VALUES ('$cenaId','$mundoId','$usuarioEmail')";
+        $query = $con->query($sql);
+        if(!$query){
+            echo "Erro no query (registrar usuário de cena): ".mysqli_error($con);
+            mysqli_close($con);
+            die;
+        }
         //Se chegou até aqui, pode criar a pasta da cena no servidor:
         $cenaPath = "mundos/$mundoId/cenas/$cenaId";
         mkdir($cenaPath);

@@ -28,7 +28,7 @@
                 $personagensList .= "<div class='personagemBox'>"
                         . "<img src='$img' width='80%'></img><br>"
                         . "<a href='infoPersonagem.php?id=$personagemId&mundo=$personagemMundoId'>$personagemNome</a><br>"
-                        . "Mundo: $personagemMundo<br></div>";
+                        . "Mundo: <a href='escolhaCena.php?mundo=$personagemMundoId'>$personagemMundo</a><br></div>";
             }
             echo $personagensList;
         }else{

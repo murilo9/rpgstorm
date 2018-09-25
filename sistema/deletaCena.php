@@ -19,6 +19,14 @@
                     mysqli_close($con);
                     die();
                 }
+                //Deleta os participantes da cena do BD:
+                $sql = "DELETE FROM tbCenasUsuarios WHERE stId='$cenaId' && stMundo='$mundoId'";
+                $query = $con->query($sql);
+                if(!$query){
+                    echo 'Erro no query (deletar participantes da cena):'.mysqli_error($con);
+                    mysqli_close($con);
+                    die();
+                }
                 //Deleta a cena do BD:
                 $sql = "DELETE FROM tbCenas WHERE stId='$cenaId' && stMundo='$cenaMundoId'";
                 $query = $con->query($sql);

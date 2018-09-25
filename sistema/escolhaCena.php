@@ -83,14 +83,6 @@
             }
             echo "$staffList<br>";
             mysqli_close($con);
-            //Exibe modelo de ficha:
-            $ficha = '';
-            $arquivoAberto = fopen("mundos/$mundoId/ficha.php", 'r');
-            while(!feof($arquivoAberto)){
-                $ficha .= fgets($arquivoAberto);
-            }
-            echo "Modelo de ficha:<br><div class='formulario'>$ficha</div><br><br>";
-            fclose($arquivoAberto);
             if($enterStatus == 'unsolicited'){    //Exibe a opção de pedir parar entrar no mundo:
                 echo "<form method='post'>"
                     . "<input name='usuarioId' type='hidden' value='$usuarioEmail'>"
@@ -115,7 +107,7 @@
             }
             
             //--TODO exibir lista de staffs
-            //--TODO botão para exibir/ocultar modelo de ficha do mundo
+            
             echo "<a href='criarPersonagem.php?mundo=$mundoId'>Criar Personagem</a><br>";
             //Pega lista de personagens que o usuário possui neste mundo:
             $sql = "SELECT * FROM tbPersonagens WHERE stMundo='$mundoId' && stDono='$usuarioEmail'";
