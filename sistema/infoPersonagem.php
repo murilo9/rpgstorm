@@ -4,6 +4,18 @@
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
 
+<script>
+    function exibeFicha(){
+        document.getElementById("inputNome").value = document.getElementById("nome").innerText;
+        document.getElementById("inputGenero").value = document.getElementById("genero").innerText;
+        document.getElementById("inputRaca").value = document.getElementById("raca").innerText;
+        document.getElementById("inputIdade").value = document.getElementById("idade").innerText;
+        document.getElementById("inputDescricao").value = document.getElementById("descricao").innerText;
+        document.getElementById("inputHabilidades").value = document.getElementById("habilidades").innerText;
+        document.getElementById("personagemFicha").style = "display: inline-block";
+    }
+</script>
+
 <div class="conteudo">
     <?php
         $personagemId = $_GET["id"];
@@ -76,8 +88,15 @@
                 . "<input type='hidden' name='mundo' value='$personagemMundoId'>"
                 . "<input type='submit' value='Deletar'></form><br><br>";
         } 
-        echo "<h3>Ficha<h3>";
-        echo "<div class='formulario'>$personagemFicha</div>";
+        echo "<div style='display: none'>$personagemFicha</div>";   //Div oculta com os dados do personagem
+        echo "<button onclick='exibeFicha()'>Ver Ficha</button><br>";
+        echo "<form class='formulario' id='personagemFicha' style='display: none'>" //Form que exibe a ficha do personagem
+            . "Nome: <input name='inputNome' id='inputNome' type='text'><br>"
+            . "Gênero: <input name='inputGenero' id='inputGenero' type='text'><br>"
+            . "Raça: <input name='inputRaca' id='inputRaca' type='text'><br>"
+            . "Idade: <input name='inputIdade' id='inputIdade' type='text' size='4'><br>"
+            . "Descrição<br><textarea name='inputDescricao' id='inputDescricao' cols='50' rows='15'></textarea><br>"
+            . "Habilidades <br><textarea name='inputHabilidades' id='inputHabilidades' cols='50' rows='15'></textarea></form>";
     ?>
 </div>
 

@@ -5,7 +5,14 @@
 ?>
 <?php include_once 'php/_header.php'; ?>
 
-<script type="text/javascript" src='js/funcoesFicha.js'></script>
+<script>
+    function enviar(){
+        document.getElementById("inputId").value = '_'+Math.floor(Math.random()*9999);  //Gera Id aleatório pro mundo
+        var formConfigMundo = document.getElementById("formularioMundo");     //Pega o formulário que vai ser submetido
+        formConfigMundo.submit();
+        //window.location = "server.php?x="+modeloFicha.innerHTML;	//(zuado):Envia o innerHTML (as tags) do formularioCriado pro servidor
+    }
+</script>
 
 <?php include_once 'php/banner.php'; ?>
 <?php include_once 'php/menu.php'; ?>
@@ -13,7 +20,7 @@
 <div style="text-align: center;">
     <h2>Criar novo mundo</h2>
         <!-- FORMULÁRIO QUE SERÁ SUBMETIDO -->
-        <form id="formularioMundo" class="formulario" action="criaMundo.php" method="post" enctype="multipart/form-data" style="text-align: center;">
+        <form id="formularioMundo" class="formulario" method="post" enctype="multipart/form-data" style="text-align: center;">
             <h3>Informações</h3><br>
             Nome do Mundo: <input name="inputNome" type="text"><br><br>
             Tipo:<br><input type="radio" name="tipo" value="true" checked> Público
@@ -21,35 +28,9 @@
             Imagem de Capa:<br><input name="arquivo" size="20" type="file"><br><br>
             <textarea name="inputDescricao" cols="50" rows="20">Descrição do mundo</textarea>
             <input type="hidden" name="inputId" id="inputId">   <!-- aqui vai o Id aleatório do mundo, gerado pelo js-->
-            <input type="hidden" name="inputFicha" id="inputFicha">   <!-- aqui vai a div da ficha cridada dinamicamente-->
             <input type="hidden" name="enviar" value="ok">
         </form>
     <br>
-    <div class="formulario" style="background: #edd9a8; border: none; text-align: center;">
-        <h3>Modelo de Ficha de Personagem</h3><br>
-        <b>Inserir:</b><br><Br>
-        <button type="button" onclick="createSmallInput()">Campo Pequeno</button>
-        <button type="button" onclick="createLargeInput()">Campo Grande</button>
-        <button type="button" onclick="createSmallTextArea()">Area de Texto Pequena</button>
-        <button type="button" onclick="createLargeTextArea()">Area de Texto Grande</button>
-        <button type="button" onclick="createHR()">Divisor Horizontal</button><br><br>
-        Label: <input name="texto" id="texto" type="text"> 
-        <input id="negrito" value="negrito" type="checkbox"> Negrito<br><br>
-        <button type="button" onclick="createLabel()">Inserir Label</button>
-        <button type="button" onclick="createBR()">Pular Linha</button>
-        <button type="button" onclick="removeElemento()">Deletar Último Elemento</button>
-        <button type="button" onclick="resetarForm()">Resetar</button>
-        
-    </div><br>
-    <div class="formulario">
-        <b>Preview</b>
-        <div id="modeloFicha">
-            Nome:<input type="text" name="personagemNome" id="personagemNome">
-            <div id="fichaCustom">
-            <!-- AQUI VÃO OS ELEMENTOS INSERIDOS DINAMICAMENTE -->
-            </div>
-        </div><br><br>
-    </div><br>
     <div class="formulario" style="background: #edd9a8; border: none; text-align: center;">
         <button type="button" onclick="enviar()">Criar Mundo</button>
     </div>
@@ -98,19 +79,6 @@
             mysqli_close($con);
             die();
         }
-        //Criar arquivo ficha.php com as tags da ficha:
-        $arquivoAberto = fopen("mundos/$mundoId/ficha.php",'x');
-        if(!$arquivoAberto){
-            echo 'Bad fopen on create: ficha.php';
-            mysqli_close($con);
-            die();
-        }
-        if(!fwrite($arquivoAberto,$mundoFicha)){
-            echo 'Bad fopen on write.';
-            mysqli_close($con);
-            die();
-        }
-        fclose($arquivoAberto);
         //Criar arquivo info.php com descrição do mundo:
         $arquivoAberto = fopen("mundos/$mundoId/info.php",'x');
         if(!$arquivoAberto){
@@ -151,9 +119,7 @@
             mysqli_close($con);
             die();
         }
-        echo 'Mundo criado com sucesso.';
-        /*echo "Id: $mundoId<br>Nome: $mundoNome<br>Tipo: $mundoTipo<br>Criador: $usuarioEmail".
-                "<br>Descr: $mundoDescricao<br>File: $nomeCapa<br>";*/
+        //Se chegou até aqui, então o mundo foi criado com sucesso
         //Unsets e disconnect:
         mysqli_close($con);
         unset($_POST["enviar"]);
