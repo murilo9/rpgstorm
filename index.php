@@ -40,8 +40,6 @@
         mysqli_close($con);
         unset($_POST["inputEmail"]);
         unset($_POST["inputSenha"]);
-    }else{
-        echo 'nothing set';
     }
 ?>
 

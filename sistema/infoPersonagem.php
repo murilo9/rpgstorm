@@ -80,7 +80,7 @@
         }
         //Exibe todos os dados:
         echo "<h2>$personagemNome</h2>Mundo: <a href='escolhaCena.php?mundo=$personagemMundoId'>$personagemMundo</a><br>"
-                . "Dono: <form method='post'><input name='id' type='hidden' value='$personagemDonoId'>"
+                . "Dono: <form method='post' action='perfil.php'><input name='id' type='hidden' value='$personagemDonoId'>"
                 . "<input type='submit' value='$personagemDono'></form><br>";
         if($viewMode == 'full'){
                 echo "<form action='deletaPersonagem.php' method='post'>"

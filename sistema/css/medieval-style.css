@@ -160,3 +160,10 @@ body{
     display: inline-block;
     border: 1px solid red;
 }
+#chatBox{
+    border: 1px solid black;
+    padding: 10px;
+    min-height: 196px;
+    max-height: 300px;
+    overflow: scroll;
+}
