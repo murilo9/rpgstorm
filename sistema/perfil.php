@@ -17,7 +17,9 @@
 ?>
 
 <script>
-    
+    function exibirConvite(){
+        document.getElementById("convidar").style = "display: block;";
+    }
     function loadDoc(func) { 
         var usuarioId = document.getElementById("usuarioId").innerText;     //Pega o ID do usuaário
         var infoUsuarioId = document.getElementById("infoUsuarioId").innerText;     //Pega o ID do destino
@@ -54,7 +56,56 @@
             . "<div id='chatBox'></div>"
             . "<textarea id='textBox' cols='50' rows='8'></textarea><br>";
     ?>
-            <button onclick="loadDoc('send')">Enviar</button>
+    <button onclick="loadDoc('send')">Enviar</button><br>
+    <button onclick="exibirConvite()">Convidar para Staff</button>
+    <div id="convidar" style="display: none;">
+        <?php
+            include 'php/_dbconnect.php';
+            $sql = "SELECT stNome, stId FROM tbMundos WHERE stCreator='$usuarioEmail'";
+            $query = $con->query($sql);
+            if($query->num_rows==0){    //Se o usuário não possuir nenhum mundo, exibe mensagem:
+                echo 'Você não possui nenhum mundo.';
+            }else{      //Caso o usuário possua um mundo, exibe a lista de mundos:
+                echo "<form action='' method='post'>Convidar para staff de: "
+                    . "<select name='selectMundo'>";
+                while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                    $mundoId = $dados["stId"];
+                    $mundoNome = $dados["stNome"];
+                    echo "<option value='$mundoId'>$mundoNome</option>";
+                }
+                echo "</select><input name='mundoNome' value='$mundoNome' type='hidden'>"
+                        . "<br><input type='submit' value='Convidar'>"
+                        . "<input name='id' type='hidden' value='$perfilId'>"   //Necessário pro início desta página
+                        . "<input name='convite' type='hidden' value='true'></form>";
+                        
+            }
+            mysqli_close($con);
+        ?>
+    </div>
 </div>
+
+<?php   //Processa envio de solicitação pra staff:
+    if(isset($_POST["convite"])){   //Verifica antes se foi madada a solicitação
+        $mundoId = $_POST["selectMundo"];
+        $mundoNome = $_POST["mundoNome"];
+        include 'php/_dbconnect.php';
+        //Verifica se já existe uma solicitação:
+        $sql = "SELECT stUsuario FROM tbNotifs "
+                . "WHERE stUsuario='$perfilId' && stTipo='SS' && etc1='$mundoId'";
+        $query = $con->query($sql);
+        if($query->num_rows>0){     //Se já houver a solicitação, exibe a mensagem:
+            echo 'Esta solicitação ja foi enviada para este jogador.';
+        }else{      //Caso não haja a solicitação, pode enviar:
+            $sql = "INSERT INTO tbNotifs(stUsuario, stTipo, stLink, stConteudo, etc1) "
+                    . "VALUES('$perfilId','SS',null,'Você foi convidado para ser staff do mundo $mundoNome.','$mundoId')";
+            $query = $con->query($sql);
+            if(!$query){
+                echo 'Erro no query(registrar notiff): '.mysqli_error($con);
+            }
+            echo 'Solicitação enviada.';
+        }
+        mysqli_close($con);
+    }
+?>
 
 <?php include_once 'php/_footer.php'; ?>
