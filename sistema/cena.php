@@ -37,8 +37,6 @@
     }
 </script>
 
-
-
 <div class="conteudo">
     <?php   //Exibe a descrição da cena e as ações:
         include 'php/_dbconnect.php';
@@ -268,5 +266,5 @@
         mysqli_close($con);
     }
 ?>
-
+<div class="anuncio"></div>
 <?php include_once 'php/_footer.php'; ?>
