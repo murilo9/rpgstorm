@@ -2,6 +2,9 @@
 <?php include_once 'php/sessionVerif.php'; 
     $perfilId = $_POST["id"];
     $usuarioEmail = $_SESSION["usuarioEmail"];
+    if($perfilId == $usuarioEmail){     //Se o usuário visitar o próprio perfil, redireciona pra conta.php
+        header("location: conta.php");
+    }
     include_once 'php/_dbconnect.php';
     $sql = "SELECT * FROM tbUsuarios WHERE stEmail='$perfilId'";
     $query = $con->query($sql);

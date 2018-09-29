@@ -106,8 +106,21 @@
                 echo "Mundo $mundoTipo<br>Criado por você<br><br>";   //Exibe informações do mundo
             }
             
-            //--TODO exibir lista de staffs
-            
+            $sql = "SELECT U.stNickname AS sNome, S.stUsuario AS sEmail "
+                    . "FROM tbStaffs S INNER JOIN tbUsuarios U "
+                    . "ON S.stUsuario = U.stEmail "
+                    . "WHERE S.stMundo='$mundoId'";
+            $query = $con->query($sql);
+            $staffList = 'Staffs: <br>';
+            while($dados = $query->fetch_array(MYSQLI_ASSOC)){
+                $staffId = $dados["sEmail"];
+                $staffName = $dados["sNome"];
+                $staffList .= "<form method='post' action='perfil.php'>"
+                        . "<input name='id' type='hidden' value='$staffId'>"
+                        . "<input type='submit' value='$staffName'></form>";
+            }
+            echo $staffList.'<br>';
+            //Exibe opção de criar personagem:
             echo "<a href='criarPersonagem.php?mundo=$mundoId'>Criar Personagem</a><br>";
             //Pega lista de personagens que o usuário possui neste mundo:
             $sql = "SELECT * FROM tbPersonagens WHERE stMundo='$mundoId' && stDono='$usuarioEmail'";
