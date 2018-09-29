@@ -6,4 +6,5 @@
 
 <h2>Você não está neste mundo.</h2>
 
+<?php include_once 'php/_anuncio.php'; ?>
 <?php include_once 'php/_footer.php'; ?>

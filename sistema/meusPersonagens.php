@@ -38,5 +38,5 @@
     ?>
 </div>
 
-<div class="anuncio"></div>
+<?php include_once 'php/_anuncio.php'; ?>
 <?php include_once 'php/_footer.php'; ?>

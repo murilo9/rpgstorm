@@ -2,6 +2,7 @@
     width: 15%;
     display: inline-block;
     vertical-align: top;
+    position: fixed;
 }
 #menu a{ 
     color: #3d2e09;
@@ -58,15 +59,20 @@ body{
     background: #e8c96d;
 }
 .conteudo{
-    border: 1px solid red;
+    border-top: 4px dotted gray;
     padding: 20px;
     width: 65%;
     display: inline-block;
+    margin-left: 15%;
 }
 .anuncio{
+    text-align: center;
+    padding-top: 200px;
     width: 15%;
+    height: 250px;
+    overflow: hidden;
     float: right;
-    border: 1px solid green;
+    border: 1px solid black;
     display: inline-block;
     vertical-align: top;
 }
