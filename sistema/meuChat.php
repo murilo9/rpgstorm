@@ -7,7 +7,7 @@
 <?php include_once 'php/menu.php'; ?>
 
 <div class="conteudo">
-    <h1>Minhas Conversas</h1>
+    <h2>Minhas Conversas</h2>
     <?php
         include 'php/_dbconnect.php';
         //Verifica se há conversas para este usuário:

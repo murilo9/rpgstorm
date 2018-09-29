@@ -5,7 +5,7 @@
 <?php include_once 'php/menu.php'; ?>
 
 <div class="conteudo">
-    <h1>Minhas Cenas</h1>
+    <h2>Minhas Cenas</h2>
     <?php
         $usuarioEmail = $_SESSION["usuarioEmail"];
         include 'php/_dbconnect.php';

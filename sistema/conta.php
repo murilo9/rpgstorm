@@ -11,7 +11,7 @@
 <div class="conteudo" style="text-align: center;">
     <form class="formulario" action="conta.php" method="post">
         <?php
-            echo "<h3>$usuarioNome</h3>";
+            echo "<h3>Configurações da conta: $usuarioNome</h3>";
         ?>
         <b>Atualizar Senha</b><br><br>
         Senha Atual:  <input type="password" name="inputSenhaAtual"><br><br>

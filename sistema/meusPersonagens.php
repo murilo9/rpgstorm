@@ -7,7 +7,7 @@
 <div class="conteudo">
     <?php
         $usuarioEmail = $_SESSION["usuarioEmail"];
-        $personagensList = '<h3>Persongens que você possui:</h3>';
+        $personagensList = '<h2>Seus Personagens:</h2>';
         include 'php/_dbconnect.php';
         $sql = "SELECT M.stNome AS mNome, P.stNome AS pNome, P.stId AS pId, P.stFoto AS pFoto, P.stMundo AS pMundoId "
                 . "FROM tbPersonagens P INNER JOIN tbMundos M "

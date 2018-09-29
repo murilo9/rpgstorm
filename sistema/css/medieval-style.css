@@ -59,11 +59,16 @@ body{
     background: #e8c96d;
 }
 .conteudo{
-    border-top: 4px dotted gray;
     padding: 20px;
+    padding-top: 0px;
     width: 65%;
     display: inline-block;
     margin-left: 15%;
+}
+.conteudo h2{
+    border-bottom: 4px solid #3d2e09;
+    border-top: 4px solid #3d2e09;
+    margin-top: 0px;
 }
 .anuncio{
     text-align: center;
@@ -99,21 +104,25 @@ body{
     max-width: 70%;
 }
 .cenaBox{
-    border: 1px solid black;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    margin-bottom: 4px;
 }
 .personagemBox{
-    border: 1px solid black;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
     display: inline-block;
     width: 20%;
 }
 .acaoBox{
-    border: 1px solid black;
+    border: 3px solid #3d2e09;
+    border-radius: 10px;
     padding: 10px;
+    margin-bottom: 4px;
 }
 .personagemFoto{
     vertical-align: top;
     display: inline-block;
-    border: 1px solid red;
 }
 .personagemFoto img{
     width: 128px;
@@ -123,6 +132,7 @@ body{
     padding: 10px;
     display: inline-block;
     border: 1px solid red;
+    max-width: 80%;
 }
 .personagemDados h3{
     margin: 0px;

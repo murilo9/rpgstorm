@@ -35,6 +35,12 @@
             document.getElementById("formDeletaAcao").submit();
         }
     }
+    function postar(){
+        var textarea = document.getElementById("inputAcao");     //Pega a textarea
+        var inputPre = document.getElementById("inputPre");     //Pega a hidden input
+        inputPre.value = "<pre>"+textarea.innerHTML+"</pre>";   //O valor da hidden input é o textarea.value dentro do <pre>
+        document.getElementById("postForm").submit();     //Dá submit no formulario
+    }
 </script>
 
 <div class="conteudo">
@@ -133,7 +139,8 @@
         $sql = "SELECT * FROM tbPersonagens WHERE stDono='$usuarioEmail' && stMundo='$mundoId'";
         $query = $con->query($sql);
         if($query->num_rows>0){     //Se o usuário tiver personagens, exibe o form com a lista
-            echo "<form method='post'><input name='postar' type='hidden' value='true'>"
+            echo "<form id='postForm' method='post'>"
+            . "<input name='postar' type='hidden' value='true'>"
             . "<input id='inputId' name='inputId' type='hidden'>"
             . "Postar ação com: <select name='personagem'>";
             while($dados = $query->fetch_array(MYSQLI_ASSOC)){  //Exibe as options
@@ -141,8 +148,9 @@
                 $personagemId = $dados["stId"];
                 echo "<option value='$personagemId'>$personagemNome</option>";
             }
-            echo "</select><br><textarea name='inputAcao' cols='70' rows='10'></textarea>"
-            . "<br><input type='submit' value='Postar'></form>";
+            echo "</select><br><textarea id='inputAcao' cols='70' rows='10'></textarea>"
+            . "<input id='inputPre' name='inputPre' type='hidden'><br>"    //Este input receberá o text dentro do <pre>
+            . "</form><button onclick='postar()'>Postar</button>";
         }else{      //Se o usuário não tiver personagens, não exibe o form:
             echo 'Voce precisar ter ao menos um personagem neste mundo para postar ações.<br>';
         }
@@ -163,7 +171,7 @@
     if(isset($_POST["postar"])){
         $acaoId = $_POST["inputId"];
         $personagemId = $_POST["personagem"];
-        $acaoTexto = $_POST["inputAcao"];
+        $acaoTexto = $_POST["inputPre"];
         if($acaoTexto === ''){
             echo 'Digite algo para postar a ação.';
             die();
@@ -240,7 +248,7 @@
         $arquivoAberto = fopen("mundos/$mundoId/cenas/$cenaId/$acaoId.php", 'w');
         fwrite($arquivoAberto, $acaoTexto);
         fclose($arquivoAberto);
-        header("location: cena.php?mundo=$mundoId&id=$cenaId");
+        echo "<script>window.location = 'cena.php?mundo=$mundoId&id=$cenaId'</script>";
     }
     //Processa a deleção de ações:
     if(isset($_POST["deletar"])){
@@ -262,8 +270,8 @@
                     . "A deleção do arquivo agora deve ser feita manualmente no servidor.";
             die();
         }
-        header("location: cena.php?mundo=$mundoId&id=$cenaId");
         mysqli_close($con);
+        echo "<script>window.location = 'cena.php?mundo=$mundoId&id=$cenaId'</script>";
     }
 ?>
 <?php include_once 'php/_anuncio.php'; ?>
