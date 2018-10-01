@@ -99,6 +99,12 @@ body{
 .mundoBox input:active{
     background: #e8c96d;
 }
+.mundoBox img{
+    width: 92px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+}
 .mundoCapa{
     min-width: 40%;
     max-width: 70%;
