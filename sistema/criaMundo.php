@@ -86,7 +86,8 @@
             mysqli_close($con);
             die();
         }
-        if(!fwrite($arquivoAberto,"<text>$mundoDescricao</text>")){
+        if(!fwrite($arquivoAberto,"<div style='max-width: 100%; text-align: justify;'><text>"
+                . "$mundoDescricao</text></div>")){
             echo 'Bad fopen on write.';
             mysqli_close($con);
             die();

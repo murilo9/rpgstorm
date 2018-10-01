@@ -65,10 +65,16 @@ body{
     display: inline-block;
     margin-left: 15%;
 }
-.conteudo h2{
+.conteudo h1{
     border-bottom: 4px solid #3d2e09;
     border-top: 4px solid #3d2e09;
     margin-top: 0px;
+}
+.conteudo h2{
+    margin: 0px;
+}
+.conteudo h3{
+    margin: 0px;
 }
 .anuncio{
     text-align: center;
@@ -109,10 +115,12 @@ body{
     min-width: 40%;
     max-width: 70%;
 }
-.cenaBox{
-    border: 4px solid #3d2e09;
-    border-radius: 10px;
-    margin-bottom: 4px;
+.cenaImagem{
+    display: inline-block;
+}
+.cenaConteudo{
+    display: inline-block;
+    margin-left: 16px;
 }
 .personagemBox{
     border: 4px solid #3d2e09;
@@ -171,7 +179,6 @@ body{
 .cenaImagem{
     vertical-align: top;
     display: inline-block;
-    border: 1px solid red;
 }
 .cenaImagem img{
     width: 440px;
@@ -188,4 +195,11 @@ body{
     min-height: 196px;
     max-height: 300px;
     overflow: scroll;
+}
+.bloco{
+    border: 3px solid black;
+    border-radius: 10px;
+    background-color: #e8c96d;
+    margin-top: 24px;
+    padding: 16px;
 }

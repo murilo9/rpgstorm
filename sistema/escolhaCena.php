@@ -31,9 +31,9 @@
         }else{
             $mundoTipo = 'privado';
         }
-        $capaArquivo = $dados["stCapa"];
+        $mundoCapa = $dados["stCapa"];
         //Cria div oculta com nome da imagem de capa, pra ser 'lida' pelo html:
-        echo "<div id='nomeCapa' style='display: none;'>$capaArquivo</div>";
+        echo "<div id='nomeCapa' style='display: none;'>$mundoCapa</div>";
     }
     $sql = "SELECT stNickname FROM tbUsuarios WHERE stEmail = '$mundoCreator'";
     $query = $con->query($sql);
@@ -61,6 +61,9 @@
         if(confirm('Deseja mesmo deixar de fazer parte deste mundo?')){
             document.getElementById("formSair").submit();
         }
+    }
+    function exibeDescricao(){
+        document.getElementById("mundoDescricao").style = "display: block";
     }
 </script>
 
@@ -93,7 +96,11 @@
             }
         }else{              //Se o usuário puder entrar, exibe os personagens e cenas:
             include 'php/_dbconnect.php';
-            echo "<h2>$mundoNome</h2>";
+            echo "<div style='text-align: center;'><h1>$mundoNome</h1>"
+                . "<img src='mundos/$mundoId/$mundoCapa' style='max-width: 500px; max-height: 350px;'>"
+                . "<br><br><button onclick='exibeDescricao()'>Ver descrição</button>"
+                . "<div id='mundoDescricao' class='bloco' style='display: none'>$mundoDescricao</div></div>";   //Esta div possui seu próprio estilo no CSS
+            echo '<div class="bloco">';
             //Exibe o botão de sair do mundo (caso o usuário não seja o dono):
             if($mundoCreator != $usuarioEmail){
                 echo "<form id='formSair' method='post'>"
@@ -101,41 +108,46 @@
                     . "<input name='mundoId' type='hidden' value='$mundoId'>"
                     . "<input name='sair' type='hidden' value='true'></form>"
                     . "<button onclick='sairMundo()'>Sair deste mundo</button><br>";     //Exibe botão de sair do mundo
-                echo "Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>";   //Exibe informações do mundo
+                echo "Mundo $mundoTipo - Criado por $mundoCreatorNome<br><br>";   //Exibe informações do mundo
             }else{
-                echo "Mundo $mundoTipo<br>Criado por você<br><br>";   //Exibe informações do mundo
+                echo "Mundo $mundoTipo - Criado por você<br><br>";   //Exibe informações do mundo
             }
-            
+            //Exibe lista de staffs:
             $sql = "SELECT U.stNickname AS sNome, S.stUsuario AS sEmail "
                     . "FROM tbStaffs S INNER JOIN tbUsuarios U "
                     . "ON S.stUsuario = U.stEmail "
                     . "WHERE S.stMundo='$mundoId'";
             $query = $con->query($sql);
-            $staffList = 'Staffs: <br>';
+            $staffList = 'Staffs: ';
             while($dados = $query->fetch_array(MYSQLI_ASSOC)){
                 $staffId = $dados["sEmail"];
                 $staffName = $dados["sNome"];
-                $staffList .= "<form method='post' action='perfil.php'>"
+                $staffList .= "<form method='post' action='perfil.php' style='display: inline-block;'>"
                         . "<input name='id' type='hidden' value='$staffId'>"
                         . "<input type='submit' value='$staffName'></form>";
             }
             echo $staffList.'<br>';
             //Exibe opção de criar personagem:
-            echo "<a href='criarPersonagem.php?mundo=$mundoId'>Criar Personagem</a><br>";
+            echo "<a href='criarPersonagem.php?mundo=$mundoId'><h3>Criar Personagem</h3></a><br>";
             //Pega lista de personagens que o usuário possui neste mundo:
             $sql = "SELECT * FROM tbPersonagens WHERE stMundo='$mundoId' && stDono='$usuarioEmail'";
             $query = $con->query($sql);
             if($query->num_rows>0){
                 $personagensList = 'Personagens seus neste mundo:';
                 while($dados = $query->fetch_array(MYSQLI_ASSOC)){
-                    $personagensList .= '<br>'.$dados["stNome"];
+                    $personagemNome = $dados["stNome"];
+                    $personagemId = $dados["stId"];
+                    $personagemMundo = $dados["stMundo"];
+                    $personagensList .= "<br><a href='infoPersonagem.php?id=$personagemId&mundo=$personagemMundo'>"
+                            . "$personagemNome</a>";
                 }
                 echo $personagensList;
             }else{
                 echo 'Você não possui nenhum personagem neste mundo.';
             }
-            echo "<br><h3 style='display: inline-block;'>Cenas</h3>"
-               . "<a href='criarCena.php?mundo=$mundoId' style='float: right;'>Criar Cena</a><br>";
+            echo "</div>";
+            echo "<br><h2 style='display: inline-block;'>Cenas</h2>"
+               . "<a href='criarCena.php?mundo=$mundoId' style='float: right;'><h3>Criar Cena</h3></a><br>";
             //Exibe a lista de cenas que o mundo possui:
             $sql = "SELECT C.stId AS cId, C.stNome AS cNome, C.stCreator, C.blEstado AS cEstado, "
                     . "C.dtData cData, C.stImagem AS cImagem, P.stNome AS pNome, P.stDono AS pDono "
@@ -150,22 +162,28 @@
                     $personagemDono = $dados["pDono"];
                     $cenaEstado = $dados["cEstado"];
                     $cenaData = $dados["cData"];
-                    $cenaImagem = $dados["cImagem"];
-                    //TODO verificar se a cena possui imagem
-                    echo "<div class='cenaBox'><a href='cena.php?id=$cenaId&mundo=$mundoId'>"
-                            . "<h3>$cenaNome</h3></a>$cenaData<br>Criada por $cenaCreator";
+                    if($dados["cImagem"] == 'none'){
+                        $cenaImagem = "mundos/$mundoId/$mundoCapa";
+                    }else{
+                        $arquivo = $dados["cImagem"];
+                        $cenaImagem = "mundos/$mundoId/cenas/$cenaId/$arquivo";
+                    }
+                    echo "<div class='bloco'><div class='cenaImagem'><img src='$cenaImagem' style='width: 200px;'>"
+                            . "</div><div class='cenaConteudo'><h3><a href='cena.php?id=$cenaId&mundo=$mundoId'>"
+                            . "$cenaNome</h3></a>$cenaData<br>Criada por $cenaCreator";
                     if($personagemDono == $usuarioEmail){     //Se a cena for do usuário, exibe a opção de deletar:
                         echo "<form action='deletaCena.php' method='post'>"
                         . "<input name='mundo' type='hidden' value='$mundoId'>"
                         . "<input name='id' type='hidden' value='$cenaId'>"
                         . "<input type='submit' value='Deletar'></form>";
                     }
-                    echo '</div>';
+                    echo '</div></div>';
                 }
             }else{
                 echo 'Não há cenas neste mundo.';
             }
             mysqli_close($con);
+            echo '</div>';
         }
     ?>
 </div>
