@@ -38,7 +38,7 @@
     function postar(){
         var textarea = document.getElementById("inputAcao");     //Pega a textarea
         var inputPre = document.getElementById("inputPre");     //Pega a hidden input
-        inputPre.value = "<pre>"+textarea.innerHTML+"</pre>";   //O valor da hidden input é o textarea.value dentro do <pre>
+        inputPre.value = textarea.innerHTML;   //O valor da hidden input é o textarea.value dentro do <pre>
         document.getElementById("postForm").submit();     //Dá submit no formulario
     }
 </script>
@@ -69,14 +69,15 @@
             //Exibe o retorno ao mundo:
             echo "<h4>Retornar para <a href='escolhaCena.php?mundo=$mundoId'>$mundoNome</a></h4>";
             //Exibe a cenaBox:
-            echo "<div class='cenaBox'><div class='cenaImagem'>";
+            echo "<h1>$cenaNome</h1><div class='horadata'>$cenaData</div> criada por $cenaCreator<br><br>"
+                    . "<div class='cenaBox' style='text-align: center'><div class='cenaImagem'>";
             if($cenaImagem == 'none'){  //Se a cena não tiver imagem, exibe a capa do mundo:
                 echo "<img src='mundos/$mundoId/$mundoCapa'>";
             }else{      //Se a cena tiver imagem, mostra:
                 echo "<img src='mundos/$mundoId/cenas/$cenaId/$cenaImagem'>";
             }
-            echo "</div><div class='cenaDados'>";
-            echo "<h3>$cenaNome</h3>$cenaData criada por $cenaCreator<br>";
+            echo "</div><div class='bloco'>";
+            echo "";
         }
         //Pega o arquivo com a descrição da cena:
         $cenaDescricao = '';
@@ -116,14 +117,16 @@
             }else{
                 echo "<img src='mundos/$mundoId/personagens/$personagemId/$personagemFoto'></div>";
             }
-            echo "<div class='personagemDados'><a href='infoPersonagem.php?id=$personagemId&mundo=$personagemMundoId'>"
-            . "<h3>$personagemNome</h3></a><h4>$acaoDataHora</h4>";
-            echo "$acaoTexto";
+            echo "<div class='personagemDados'><a href='infoPersonagem.php?id=$personagemId&mundo=$personagemMundoId'"
+                    . " style='display: inline-block'><h3 style='display: inline-block'>$personagemNome</h3></a>"
+                    . "<div class='horadata'>($acaoDataHora)</div><br>"
+                    . "$acaoTexto";
+            echo '</div>';
             if($personagemDono == $usuarioEmail){
                 echo "<br><button onclick='deletarAcao(".'"'.$acaoId.'","'.$cenaId.'","'.$mundoId.'"'.')'."'>Deletar</button>";
                 //echo "<br><button onclick='function(){deletarAcao($acaoId, $cenaId, $mundoId)}'>Deletar</button>";
             }
-            echo '</div></div>';
+            echo '</div>';
         }
         mysqli_close($con);
         //Exibindo form oculta que será submetido ao se deletar uma ação
@@ -139,7 +142,7 @@
         $sql = "SELECT * FROM tbPersonagens WHERE stDono='$usuarioEmail' && stMundo='$mundoId'";
         $query = $con->query($sql);
         if($query->num_rows>0){     //Se o usuário tiver personagens, exibe o form com a lista
-            echo "<form id='postForm' method='post'>"
+            echo "<br><div class='formulario'><form id='postForm' method='post'>"
             . "<input name='postar' type='hidden' value='true'>"
             . "<input id='inputId' name='inputId' type='hidden'>"
             . "Postar ação com: <select name='personagem'>";
@@ -148,9 +151,9 @@
                 $personagemId = $dados["stId"];
                 echo "<option value='$personagemId'>$personagemNome</option>";
             }
-            echo "</select><br><textarea id='inputAcao' cols='70' rows='10'></textarea>"
-            . "<input id='inputPre' name='inputPre' type='hidden'><br>"    //Este input receberá o text dentro do <pre>
-            . "</form><button onclick='postar()'>Postar</button>";
+            echo "</select><br><br><textarea id='inputAcao' cols='70' rows='10'></textarea>"
+            . "<input id='inputPre' name='inputPre' type='hidden'><br><br>"    //Este input receberá o text dentro do <pre>
+            . "</form><button onclick='postar()'>Postar</button></div>";
         }else{      //Se o usuário não tiver personagens, não exibe o form:
             echo 'Voce precisar ter ao menos um personagem neste mundo para postar ações.<br>';
         }

@@ -70,7 +70,7 @@
 <div class="conteudo">
     <?php
         if($enterStatus != 'true'){     //Se o usuário não puder entrar, exibe apenas as informações:
-            echo "<h2>$mundoNome</h2>Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>"
+            echo "<h1>$mundoNome</h1>Mundo $mundoTipo<br>Criado por $mundoCreatorNome<br><br>"
                     . "<img class='mundoCapa' src='mundos/$mundoId/$capaArquivo'><br><br>$mundoDescricao<br><br>";
             //Exibe lista de staffs:
             $staffList = 'Staffs:<br>';
@@ -170,7 +170,7 @@
                     }
                     echo "<div class='bloco'><div class='cenaImagem'><img src='$cenaImagem' style='width: 200px;'>"
                             . "</div><div class='cenaConteudo'><h3><a href='cena.php?id=$cenaId&mundo=$mundoId'>"
-                            . "$cenaNome</h3></a>$cenaData<br>Criada por $cenaCreator";
+                            . "$cenaNome</h3></a><div class='horadata'>$cenaData</div><br>Criada por $cenaCreator";
                     if($personagemDono == $usuarioEmail){     //Se a cena for do usuário, exibe a opção de deletar:
                         echo "<form action='deletaCena.php' method='post'>"
                         . "<input name='mundo' type='hidden' value='$mundoId'>"

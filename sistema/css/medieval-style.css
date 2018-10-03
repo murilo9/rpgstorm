@@ -132,7 +132,16 @@ body{
     border: 3px solid #3d2e09;
     border-radius: 10px;
     padding: 10px;
-    margin-bottom: 4px;
+    margin-top: 4px;
+}
+.acaoBox button{
+    font-weight: bold;
+    border: 4px solid #3d2e09;
+    border-radius: 10px;
+    margin-right: 8px;
+}
+.acaoBox button:hover{
+    background: #ff7a38;
 }
 .personagemFoto{
     vertical-align: top;
@@ -144,9 +153,10 @@ body{
 .personagemDados{
     vertical-align: top;
     padding: 10px;
+    padding-top: 0px;
     display: inline-block;
-    border: 1px solid red;
     max-width: 80%;
+    text-align: justify;
 }
 .personagemDados h3{
     margin: 0px;
@@ -188,6 +198,7 @@ body{
     padding: 10px;
     display: inline-block;
     border: 1px solid red;
+    text-align: justify;
 }
 #chatBox{
     border: 1px solid black;
@@ -197,9 +208,15 @@ body{
     overflow: scroll;
 }
 .bloco{
-    border: 3px solid black;
+    border: 3px solid #3d2e09;
     border-radius: 10px;
     background-color: #e8c96d;
     margin-top: 24px;
     padding: 16px;
+    text-align: justify;
+}
+.horadata{
+    display: inline-block;
+    color: green;
+    margin-left: 4px;
 }

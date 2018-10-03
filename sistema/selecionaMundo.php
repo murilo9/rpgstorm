@@ -5,7 +5,7 @@
 <?php include_once 'php/menu.php'; ?>
 
 <div class="conteudo">
-    <h2>Mundos</h2>
+    <h1>Mundos</h1>
     <?php
         include_once 'php/_dbconnect.php';
         $sql = "SELECT M.stNome AS mNome, M.stId AS mId, M.stCapa AS mCapa, "
